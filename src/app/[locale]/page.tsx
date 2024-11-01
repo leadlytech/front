@@ -1,5 +1,7 @@
 import {useTranslations} from 'next-intl';
 import {Link} from '@/i18n/routing';
+
+import { ModeToggle } from '@/components/custom/modeToggle';
  
 export default function HomePage() {
   const t = useTranslations('HomePage');
@@ -7,6 +9,7 @@ export default function HomePage() {
     <div>
       <h1>{t('title')}</h1>
       <Link href="/about">{t('about')}</Link>
+      <ModeToggle />
     </div>
   );
 }
