@@ -2,9 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useTranslations } from "next-intl";
+import { usePathname } from "next/navigation";
 
-import { usePathname } from "@/i18n/routing";
 import { routes } from "@/routes";
 
 import { GetIcon, IconTypeKey } from "@/components/custom";
@@ -19,21 +18,20 @@ interface IItem {
 
 export function SideBarOptions() {
     const pathname = usePathname();
-    const t = useTranslations();
 
     const items: IItem[] = [
         {
-            title: t("Trade"),
+            title: "Trade",
             href: routes.dashboard._,
             icon: "TbChartCandleFilled",
         },
         {
-            title: t("Histórico"),
+            title: "Histórico",
             href: routes.dashboard.history,
             icon: "FaHistory",
         },
         {
-            title: t("Suporte"),
+            title: "Suporte",
             href: routes.dashboard.support,
             icon: "LuBadgeHelp",
         },

@@ -1,15 +1,13 @@
 "use client";
 
 import { useTransition } from "react";
-import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
 import { apiActions, createCookie, makeApiRequest } from "@/actions";
-
-import { Link, useRouter } from "@/i18n/routing";
 
 import {
     Form,
@@ -25,10 +23,10 @@ import {
     Button,
 } from "@/components/ui";
 import { routes } from "@/routes";
+import Link from "next/link";
 
 export default function Page() {
     const [isPending, startTransition] = useTransition();
-    const t = useTranslations();
     const router = useRouter();
 
     const action = apiActions.login;
@@ -57,7 +55,7 @@ export default function Page() {
                 );
 
                 if (res.message) {
-                    toast.success(t(res.message));
+                    toast.success(res.message);
                 }
 
                 router.refresh();
@@ -65,7 +63,7 @@ export default function Page() {
                 return;
             }
 
-            toast.error(t(res.message || "system.notification.unknownError"));
+            toast.error(res.message || "system.notification.unknownError");
         });
     }
 
@@ -80,7 +78,7 @@ export default function Page() {
                     name="email"
                     render={({ field }) => (
                         <FormItem className="w-full">
-                            <FormLabel>{t("E-Mail")}</FormLabel>
+                            <FormLabel>E-Mail</FormLabel>
                             <FormControl>
                                 <Input
                                     placeholder="johndoe@example.com"
@@ -98,7 +96,7 @@ export default function Page() {
                     name="password"
                     render={({ field }) => (
                         <FormItem className="w-full">
-                            <FormLabel>{t("Senha")}</FormLabel>
+                            <FormLabel>Senha</FormLabel>
                             <FormControl>
                                 <PasswordInput
                                     placeholder="****************"
@@ -115,7 +113,7 @@ export default function Page() {
                         href="/auth/recovery"
                         className="text-sm text-blue-700 hover:underline"
                     >
-                        {t("Esqueci a senha")}
+                        Esqueci a senha
                     </Link>
                 </div>
                 <FormField
@@ -130,11 +128,10 @@ export default function Page() {
                                 />
                             </FormControl>
                             <div className="space-y-1 leading-none">
-                                <FormLabel>{t("Lembrar senha")}</FormLabel>
+                                <FormLabel>Lembrar senha</FormLabel>
                                 <FormDescription>
-                                    {t(
-                                        "Você não precisará inserir suas credenciais por 7 dias"
-                                    )}
+                                    Você não precisará inserir suas credenciais
+                                    por 7 dias
                                 </FormDescription>
                                 <FormMessage />
                             </div>
@@ -142,15 +139,15 @@ export default function Page() {
                     )}
                 />
                 <Button type="submit" className="w-full" disabled={isPending}>
-                    {t("Entrar")}
+                    Entrar
                 </Button>
                 <p className="text-sm">
-                    {t("Não possui uma conta?")}{" "}
+                    Não possui uma conta?{" "}
                     <Link
                         href={routes.auth.register}
                         className="text-blue-700 hover:underline"
                     >
-                        {t("Então cadastre-se!")}
+                        Então cadastre-se!
                     </Link>
                 </p>
             </form>

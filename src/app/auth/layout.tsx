@@ -2,23 +2,14 @@ import { ReactNode } from "react";
 import Image from "next/image";
 import { cookies } from "next/headers";
 
-import { redirect } from "@/i18n/routing";
 import { routes } from "@/routes";
+import { redirect } from "next/navigation";
 
-export default function AuthLayout({
-    children,
-    params,
-}: {
-    children: ReactNode;
-    params: { locale: string };
-}) {
+export default function AuthLayout({ children }: { children: ReactNode }) {
     const cookiesStore = cookies();
 
     if (cookiesStore.has("auth")) {
-        redirect({
-            href: routes.dashboard._,
-            locale: params.locale,
-        });
+        redirect(routes.dashboard._);
     }
 
     return (

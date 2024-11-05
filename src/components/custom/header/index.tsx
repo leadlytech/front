@@ -1,9 +1,5 @@
 "use client";
 
-// import { useContext } from "react";
-import { useTranslations } from "next-intl";
-
-// import { MainContext } from "@/context";
 import { removeCookie } from "@/actions";
 import { SideBarOptions } from "../sidebar";
 
@@ -25,9 +21,6 @@ import {
 } from "@/components/ui";
 
 export function Header() {
-    // const {} = useContext(MainContext);
-    const t = useTranslations();
-
     const login = { user: { name: "John Doe", level: "Nível Prata" } };
 
     return (
@@ -66,7 +59,7 @@ export function Header() {
                                 className="hidden md:flex gap-4 justify-center items-center overflow-hidden rounded-none hover:bg-transparent active:border-none"
                             >
                                 <div className="flex flex-col justify-center items-end">
-                                    <h1>{t("Seja bem vindo,")}</h1>
+                                    <h1>Seja bem vindo,</h1>
                                     <h2 className="font-bold">
                                         {String(login?.user.name).split(" ")[0]}
                                     </h2>
@@ -113,7 +106,7 @@ export function Header() {
                                 onClick={() => removeCookie("auth")}
                                 className="cursor-pointer"
                             >
-                                {t("Sair")}
+                                Sair
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
@@ -127,7 +120,7 @@ export function Header() {
                             >
                                 <div className="flex flex-col justify-center items-start">
                                     <h1 className="text-muted-foreground">
-                                        {t("Saldo demo")}
+                                        Saldo demo
                                     </h1>
                                     <h2 className="font-bold">R$ 10,000.00</h2>
                                 </div>
@@ -140,7 +133,7 @@ export function Header() {
                             <DropdownMenuItem className="cursor-pointer">
                                 <div className="flex flex-col justify-center items-start">
                                     <h1 className="text-muted-foreground">
-                                        {t("Saldo real")}
+                                        Saldo real
                                     </h1>
                                     <h2 className="font-bold">R$ 10,000.00</h2>
                                 </div>
@@ -149,7 +142,7 @@ export function Header() {
                             <DropdownMenuItem className="cursor-pointer">
                                 <div className="flex flex-col justify-center items-start">
                                     <h1 className="text-muted-foreground">
-                                        {t("Saldo demo")}
+                                        Saldo demo
                                     </h1>
                                     <h2 className="font-bold">R$ 10,000.00</h2>
                                 </div>
@@ -163,7 +156,7 @@ export function Header() {
                         className="flex justify-center items-center gap-2 bg-green-500 text-white uppercase"
                     >
                         <GetIcon icon="BsCoin" />
-                        <p className="h-fit">{t("Depositar")}</p>
+                        <p className="h-fit">Depositar</p>
                     </Button>
                 </div>
             </div>

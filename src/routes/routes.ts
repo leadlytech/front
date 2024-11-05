@@ -8,5 +8,7 @@ export const routes = {
     },
     dashboard: {
         _: "/dashboard",
+        history: "/dashboard/history",
+        support: "/dashboard/support",
     },
 };

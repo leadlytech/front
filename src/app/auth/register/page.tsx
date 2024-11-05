@@ -1,7 +1,6 @@
 "use client";
 
 import { useTransition } from "react";
-import { useTranslations } from "next-intl";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -9,8 +8,6 @@ import { toast } from "sonner";
 
 import { apiActions, makeApiRequest } from "@/actions";
 import { routes } from "@/routes";
-
-import { Link, useRouter } from "@/i18n/routing";
 
 import {
     Form,
@@ -25,10 +22,11 @@ import {
     PasswordInput,
     Checkbox,
 } from "@/components/ui";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
-export default function Page({ params }: { params: { locale: string } }) {
+export default function Page() {
     const [isPending, startTransition] = useTransition();
-    const t = useTranslations();
     const router = useRouter();
 
     const action = apiActions.register;
@@ -46,15 +44,13 @@ export default function Page({ params }: { params: { locale: string } }) {
             const res = await makeApiRequest(action, { data });
 
             if (res.success) {
-                toast.success(t(res.message));
+                toast.success(res.message);
                 return;
             }
 
-            router.push(routes.auth.login, {
-                locale: params.locale,
-            });
+            router.push(routes.auth.login);
 
-            toast.error(t(res.message || "system.notification.unknownError"));
+            toast.error(res.message || "system.notification.unknownError");
         });
     }
 

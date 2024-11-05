@@ -31,9 +31,9 @@ export default function MainProvider({ children }: { children: ReactNode }) {
     }, []);
 
     useEffect(() => {
-        DisableDevtool({
-            md5: process.env.NEXT_PUBLIC_DDTK_MD5 || undefined,
-        });
+        // DisableDevtool({
+        //     md5: process.env.NEXT_PUBLIC_DDTK_MD5 || undefined,
+        // });
 
         sync().then(() => setLoaded(true));
     }, [sync]);

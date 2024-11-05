@@ -1,17 +1,14 @@
 "use client";
 
 import { useTransition } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useTranslations } from "next-intl";
 import * as z from "zod";
 import { toast } from "sonner";
 
 import { apiActions, makeApiRequest } from "@/actions";
 import { routes } from "@/routes";
-
-import { useRouter } from "@/i18n/routing";
 
 import {
     Form,
@@ -21,13 +18,13 @@ import {
     FormControl,
     FormMessage,
     PasswordInput,
+    Input,
+    Button,
 } from "@/components/ui";
-import { Input, Button } from "@/components/ui";
 
-export default function Page({ params }: { params: { locale: string } }) {
+export default function Page() {
     const [isPending, startTransition] = useTransition();
     const searchParams = useSearchParams();
-    const t = useTranslations();
     const router = useRouter();
 
     const token = searchParams.get("token");
@@ -44,15 +41,13 @@ export default function Page({ params }: { params: { locale: string } }) {
             const res = await makeApiRequest(action, { data });
 
             if (res.success) {
-                toast.success(t(res.message));
+                toast.success(res.message);
                 return;
             }
 
-            router.push(routes.auth.login, {
-                locale: params.locale,
-            });
+            router.push(routes.auth.login);
 
-            toast.error(t(res.message || "system.notification.unknownError"));
+            toast.error(res.message || "system.notification.unknownError");
         });
     }
 
@@ -69,7 +64,7 @@ export default function Page({ params }: { params: { locale: string } }) {
                             name="newPassword"
                             render={({ field }) => (
                                 <FormItem className="w-full">
-                                    <FormLabel>{t("Nova senha")}</FormLabel>
+                                    <FormLabel>{"Nova senha"}</FormLabel>
                                     <FormControl>
                                         <PasswordInput
                                             placeholder="****************"
@@ -87,7 +82,7 @@ export default function Page({ params }: { params: { locale: string } }) {
                             render={({ field }) => (
                                 <FormItem className="w-full">
                                     <FormLabel>
-                                        {t("Confirmar nova senha")}
+                                        {"Confirmar nova senha"}
                                     </FormLabel>
                                     <FormControl>
                                         <PasswordInput
@@ -107,7 +102,7 @@ export default function Page({ params }: { params: { locale: string } }) {
                         name="email"
                         render={({ field }) => (
                             <FormItem className="w-full">
-                                <FormLabel>{t("E-Mail")}</FormLabel>
+                                <FormLabel>{"E-Mail"}</FormLabel>
                                 <FormControl>
                                     <Input
                                         placeholder="johndoe@example.com"
@@ -122,9 +117,7 @@ export default function Page({ params }: { params: { locale: string } }) {
                     />
                 )}
                 <Button type="submit" className="w-full" disabled={isPending}>
-                    {token
-                        ? t("Trocar Senha")
-                        : t("Enviar E-Mail de recuperação")}
+                    {token ? "Trocar Senha" : "Enviar E-Mail de recuperação"}
                 </Button>
             </form>
         </Form>
