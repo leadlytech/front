@@ -11,5 +11,5 @@ export const password = z
 export const loginSchema = z.object({
     email: z.string().email(),
     password,
-    remember: z.boolean().default(true),
+    remember: z.boolean().optional(),
 });

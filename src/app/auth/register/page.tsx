@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { toast } from "sonner";
 
-import { apiActions, makeApiRequest } from "@/actions";
+import { apiActions, createCookie, makeApiRequest } from "@/actions";
 import { routes } from "@/routes";
 
 import {
@@ -41,10 +41,33 @@ export default function Page() {
 
     function onSubmit(data: TSchema) {
         startTransition(async () => {
-            const res = await makeApiRequest(action, { data });
+            const res = await makeApiRequest("register", { data });
 
             if (res.success) {
-                toast.success(res.message);
+                toast.success(`Cadastro realizado com sucesso!`);
+                setTimeout(async () => {
+                    const logged = await makeApiRequest("login", {
+                        data: {
+                            email: data.email,
+                            password: data.password,
+                        },
+                    });
+
+                    if (logged.success) {
+                        await createCookie(
+                            "auth",
+                            JSON.stringify({
+                                token: logged.payload.payload.token,
+                            }),
+                            {
+                                maxAge: 86400,
+                            }
+                        );
+
+                        toast.success(`Seja bem vindo(a) ${data.firstName}!`);
+                        router.refresh();
+                    }
+                }, 1_000);
                 return;
             }
 

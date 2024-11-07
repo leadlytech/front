@@ -8,25 +8,25 @@ import {
 export const apiActions = {
     // ========== AUTH
     register: {
-        path: "/auth/register",
+        path: "/v1/auth/register",
         method: EHttpMethods.POST,
         schema: registerSchema,
         dispenseToken: true,
     },
     login: {
-        path: "/auth/login",
+        path: "/v1/auth/login",
         method: EHttpMethods.POST,
         schema: loginSchema,
         dispenseToken: true,
     },
     recovery: {
-        path: "/auth/recovery",
+        path: "/v1/auth/verify",
         method: EHttpMethods.POST,
         schema: recoverySchema,
         dispenseToken: true,
     },
     fetchLogin: {
-        path: "/auth/validate/token",
+        path: "/v1/account",
         method: EHttpMethods.GET,
     },
 };

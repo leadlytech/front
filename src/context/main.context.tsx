@@ -40,7 +40,7 @@ export default function MainProvider({ children }: { children: ReactNode }) {
 
     return (
         <MainContext.Provider value={{ user, sync }}>
-            {loaded ? children : <PageLoading />}
+            {children}
         </MainContext.Provider>
     );
 }

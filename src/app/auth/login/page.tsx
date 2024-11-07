@@ -41,7 +41,7 @@ export default function Page() {
 
     function onSubmit(data: TSchema) {
         startTransition(async () => {
-            const res = await makeApiRequest(action, { data });
+            const res = await makeApiRequest("login", { data });
 
             if (res.success) {
                 await createCookie(

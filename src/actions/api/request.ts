@@ -10,6 +10,7 @@ import {
     IResponse,
 } from "@/models";
 import { replacePlaceholders } from "@/utils";
+import { apiActions, TApiActionsKeys } from "./actions";
 
 interface IMakeApiRequest extends RequestInit {
     headers: {
@@ -21,26 +22,27 @@ interface IMakeApiRequest extends RequestInit {
 }
 
 export async function makeApiRequest(
-    // actionKey: TApiActionsKeys,
-    action: IAction,
+    actionKey: TApiActionsKeys,
+    // action: IAction,
     config?: IApiActionConfig
 ): Promise<IResponse> {
     try {
         console.log("###################################################");
         console.log("###################################################");
         // console.log(actionKey);
-        console.log(action);
+        // console.log(action);
         console.log(config);
         console.log("###################################################");
 
-        // const action = { ...apiActions[actionKey] } as IAction;
+        const action = { ...apiActions[actionKey] } as IAction;
 
         const requestInit: IMakeApiRequest = {
             method: action.method,
             cache: "no-cache",
             headers: {
                 "Content-Type": "application/json",
-                Accept: "application/json, text/plain, */*"
+                Accept: "application/json, text/plain, */*",
+                origin: process.env.ORIGIN,
             },
         };
 
