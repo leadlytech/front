@@ -12,7 +12,7 @@ import DisableDevtool from "disable-devtool";
 import { IMainContext, IUser } from "@/interfaces";
 import { makeApiRequest } from "@/actions";
 
-import { PageLoading } from "@/components/custom";
+// import { PageLoading } from "@/components/custom";
 
 export const MainContext = createContext<IMainContext>({
     user: undefined,
@@ -34,9 +34,11 @@ export default function MainProvider({ children }: { children: ReactNode }) {
     }, []);
 
     useEffect(() => {
-        // DisableDevtool({
-        //     md5: process.env.NEXT_PUBLIC_DDTK_MD5 || undefined,
-        // });
+        if (process.env.NODE_ENV === "production") {
+            DisableDevtool({
+                md5: process.env.NEXT_PUBLIC_DDTK_MD5 || undefined,
+            });
+        }
         if (!loaded) sync(); // Evita repetir o sync se já estiver carregado
     }, [loaded, sync]);
 

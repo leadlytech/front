@@ -1,4 +1,4 @@
-export interface IListOffset<T = any> {
+export interface IListOffset<T = never> {
     currentPage: number;
     lastPage: number;
     count: number;
@@ -7,11 +7,11 @@ export interface IListOffset<T = any> {
     data?: Partial<T>[];
 }
 
-export interface IListCursor<T = any> {
+export interface IListCursor<T = never> {
     nextCursor: string;
     take: number;
     current: number;
     data?: Partial<T>[];
 }
 
-export type TList<T = any> = IListOffset<T> | IListCursor<T>;
+export type TList<T = never> = IListOffset<T> | IListCursor<T>;

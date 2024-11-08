@@ -1,4 +1,5 @@
-import { ZodObject, ZodRawShape, ZodUnion } from "zod";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { ZodObject, ZodRawShape, ZodTypeAny, ZodUnion } from "zod";
 import { EHttpMethods } from "./http.type";
 
 export enum EResponseMessage {
@@ -20,13 +21,13 @@ export interface IAction<T extends ZodRawShape = any> {
     path: string;
     method: EHttpMethods;
     contentType?: string;
-    schema?: ZodObject<T> | ZodUnion<any> | null;
+    schema?: ZodObject<T> | ZodUnion<Readonly<[ZodTypeAny]>> | null;
     dispenseToken?: boolean;
 }
 
-export interface IApiActionConfig {
-    data?: any;
-    query?: { [key: string]: any };
+export interface IApiActionConfig<T = any> {
+    data?: T;
+    query?: { [key: string]: T };
     params?: { [key: string]: string };
     extraHeaders?: { [key: string]: string };
 }

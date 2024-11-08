@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 
 import { cookies } from "next/headers";
@@ -102,7 +103,8 @@ export async function makeApiRequest(
 
         try {
             json = await res.json();
-        } catch (err) {}
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        } catch (err: any) {}
 
         console.log(json);
 
