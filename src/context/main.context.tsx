@@ -15,7 +15,7 @@ import { makeApiRequest } from "@/actions";
 import { PageLoading } from "@/components/custom";
 
 export const MainContext = createContext<IMainContext>({
-    sync: async () => {},
+    user: undefined,
 });
 
 export default function MainProvider({ children }: { children: ReactNode }) {
@@ -23,10 +23,13 @@ export default function MainProvider({ children }: { children: ReactNode }) {
     const [loaded, setLoaded] = useState(false);
 
     const sync = useCallback(async () => {
-        const res = await makeApiRequest("");
-
-        if (res.success) {
-            setUser(res.payload);
+        try {
+            const res = await makeApiRequest("me");
+            if (res.success) {
+                setUser(res.payload.payload);
+            }
+        } finally {
+            setLoaded(true);
         }
     }, []);
 
@@ -34,12 +37,12 @@ export default function MainProvider({ children }: { children: ReactNode }) {
         // DisableDevtool({
         //     md5: process.env.NEXT_PUBLIC_DDTK_MD5 || undefined,
         // });
-
-        sync().then(() => setLoaded(true));
-    }, [sync]);
+        if (!loaded) sync(); // Evita repetir o sync se já estiver carregado
+    }, [loaded, sync]);
 
     return (
-        <MainContext.Provider value={{ user, sync }}>
+        <MainContext.Provider value={{ user }}>
+            {/* {loaded ? children : <PageLoading />} */}
             {children}
         </MainContext.Provider>
     );

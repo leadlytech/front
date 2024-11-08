@@ -25,10 +25,14 @@ export const apiActions = {
         schema: recoverySchema,
         dispenseToken: true,
     },
-    fetchLogin: {
+
+    // ========== ACCOUNT
+    me: {
         path: "/v1/account",
         method: EHttpMethods.GET,
     },
+
+    //
 };
 
 export type TApiActionsKeys = keyof typeof apiActions;

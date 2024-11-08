@@ -47,23 +47,20 @@ export default function Page() {
                 await createCookie(
                     "auth",
                     JSON.stringify({
-                        token: res.payload.data.token,
+                        token: res.payload.payload.token,
                     }),
                     {
                         maxAge: 86400,
                     }
                 );
 
-                if (res.message) {
-                    toast.success(res.message);
-                }
-
+                toast.success(`Seja bem vindo(a) de volta!`);
                 router.refresh();
 
                 return;
             }
 
-            toast.error(res.message || "system.notification.unknownError");
+            toast.error(res.message || "Falha ao realizar login");
         });
     }
 

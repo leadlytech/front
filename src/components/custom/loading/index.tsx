@@ -21,7 +21,7 @@ export function Loading() {
 
 export function PageLoading() {
     return (
-        <div className="w-screen h-[100vh] flex flex-col justify-center items-center gap-4">
+        <div className="w-screen h-[100vh] flex flex-col justify-center items-center gap-4 bg-background">
             <Loading />
         </div>
     );

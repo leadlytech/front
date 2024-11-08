@@ -38,7 +38,7 @@ export default function Page() {
 
     function onSubmit(data: TSchema) {
         startTransition(async () => {
-            const res = await makeApiRequest(action, { data });
+            const res = await makeApiRequest("recovery", { data });
 
             if (res.success) {
                 toast.success(res.message);

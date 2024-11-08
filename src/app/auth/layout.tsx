@@ -13,7 +13,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
     }
 
     return (
-        <div className="min-h-screen p-6 flex flex-col items-center justify-center gap-6 overflow-y-auto">
+        <div className="w-screen min-h-screen p-6 flex flex-col items-center justify-center gap-6 overflow-y-auto">
             <Image
                 src="/assets/images/logo.png"
                 alt="logo"
