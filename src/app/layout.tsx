@@ -2,8 +2,11 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 
-import Providers from "@/providers";
+import { cn } from "@/lib/utils";
+import { Inter } from "next/font/google"; 
+import { Sidebar } from "@/components/sidebar"
 
+import Providers from "@/providers";
 import { Toaster } from "@/components/ui";
 
 const geistSans = localFont({
@@ -11,11 +14,14 @@ const geistSans = localFont({
     variable: "--font-geist-sans",
     weight: "100 900",
 });
+
 const geistMono = localFont({
     src: "./fonts/GeistMonoVF.woff",
     variable: "--font-geist-mono",
     weight: "100 900",
 });
+
+const inter = Inter({ subsets: ["latin"] }); 
 
 export const metadata: Metadata = {
     title: "Create Next App",
@@ -30,10 +36,16 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body
-                className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+                className={cn(
+                    `${geistSans.variable} ${geistMono.variable} min-h-screen bg-background font-sans antialiased`,
+                    inter.className 
+                )}
             >
                 <Toaster />
-                <Providers>{children}</Providers>
+                <Providers>
+                <Sidebar />
+                    {children}
+                </Providers>
             </body>
         </html>
     );

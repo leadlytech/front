@@ -5,6 +5,8 @@ import { cookies } from "next/headers";
 import { routes } from "@/routes";
 import { redirect } from "next/navigation";
 
+
+
 export default function AuthLayout({ children }: { children: ReactNode }) {
     const cookiesStore = cookies();
 
@@ -21,6 +23,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
                 height={120}
             />
             <div className="w-full max-w-md p-4 bg-background rounded-lg shadow-md">
+                
                 {children}
             </div>
         </div>
