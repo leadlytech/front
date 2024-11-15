@@ -1,3 +1,4 @@
+export * from "./accordion";
 export * from "./avatar";
 export * from "./badge";
 export * from "./breadcrumb";
@@ -19,4 +20,6 @@ export * from "./sheet";
 export * from "./sidebar";
 export * from "./skeleton";
 export * from "./sonner";
+export * from "./switch";
+export * from "./tabs";
 export * from "./tooltip";
