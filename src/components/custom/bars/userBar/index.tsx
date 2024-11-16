@@ -31,12 +31,12 @@ const options = [
             {
                 title: "Meus dados",
                 icon: "MdAccountCircle",
-                url: "#",
+                url: routes.account._,
             },
             {
                 title: "Trocar senha",
                 icon: "FaUnlock",
-                url: "#",
+                url: routes.account.security,
             },
         ],
     },

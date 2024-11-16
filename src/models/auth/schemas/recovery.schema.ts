@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { password } from "./login.schema";
 
 export const sendEmailSchema = z.object({
     email: z
@@ -10,11 +11,11 @@ export const sendEmailSchema = z.object({
 
 export const resetPassSchema = z
     .object({
-        newPassword: z.string().min(6),
-        confirmNewPassword: z.string().min(6),
+        newPassword: password,
+        confirmNewPassword: password,
     })
     .refine((data) => data.newPassword === data.confirmNewPassword, {
-        message: "Passwords do not match",
+        message: "Senhas não coincidem",
         path: ["confirmNewPassword"],
     });
 

@@ -66,12 +66,12 @@ export default function Page() {
 
                         toast.success(`Seja bem vindo(a) ${data.firstName}!`);
                         router.refresh();
+                        return;
                     }
+                    router.push(routes.auth.login);
                 }, 1_000);
                 return;
             }
-
-            router.push(routes.auth.login);
 
             toast.error(res.message || "system.notification.unknownError");
         });
@@ -192,9 +192,9 @@ export default function Page() {
                             <div className="space-y-1 leading-none">
                                 <FormLabel>Termos de Uso</FormLabel>
                                 <FormDescription>
-                                    Tenho 18+ e aceito os{" "}
+                                    Eu aceito os{" "}
                                     <Link
-                                        href="/terms"
+                                        href={routes.terms}
                                         className="text-blue-700 hover:underline"
                                     >
                                         termos de uso

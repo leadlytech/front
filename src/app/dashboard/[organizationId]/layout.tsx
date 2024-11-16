@@ -1,8 +1,4 @@
 import { ReactNode } from "react";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-
-import { routes } from "@/routes";
 
 import { DashBar } from "@/components/custom";
 
@@ -18,13 +14,7 @@ import {
     SidebarTrigger,
 } from "@/components/ui";
 
-export default function AuthLayout({ children }: { children: ReactNode }) {
-    const cookiesStore = cookies();
-
-    if (!cookiesStore.has("auth")) {
-        redirect(routes.auth.login);
-    }
-
+export default function Layout({ children }: { children: ReactNode }) {
     return (
         <>
             <DashBar />

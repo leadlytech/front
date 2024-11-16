@@ -1,8 +1,10 @@
 import {
+    changeUserPassSchema,
     EHttpMethods,
     loginSchema,
     recoverySchema,
     registerSchema,
+    userSchema,
 } from "@/models";
 
 export const apiActions = {
@@ -31,8 +33,16 @@ export const apiActions = {
         path: "/v1/account",
         method: EHttpMethods.GET,
     },
-
-    //
+    updateMe: {
+        path: "/v1/account",
+        method: EHttpMethods.POST,
+        schema: userSchema,
+    },
+    updateMePass: {
+        path: "/v1/account",
+        method: EHttpMethods.POST,
+        schema: changeUserPassSchema,
+    },
 };
 
 export type TApiActionsKeys = keyof typeof apiActions;
