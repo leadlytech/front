@@ -1,5 +1,5 @@
 import { ComponentItem } from "@/interfaces";
-import { ButtonComponent, PriceComponent, TextComponent } from "./components";
+import { ButtonComponent, ImageComponent, PriceComponent, SpaceComponent, TextComponent, VideoComponent } from "./components";
 
 type Props = {
   component: ComponentItem;
@@ -15,5 +15,17 @@ export function RenderComponent({ component }: Props) {
 
     case "price":
       return <PriceComponent component={component} />;
+
+    case "image":
+      return <ImageComponent component={component} />;
+
+    case "video":
+      return <VideoComponent component={component} />;
+
+    case "space":
+      return <SpaceComponent component={component} />;
+
+    default:
+      return undefined;
   }
 }

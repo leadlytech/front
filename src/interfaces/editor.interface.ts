@@ -1,4 +1,4 @@
-type ComponentType = "button" | "text" | "price";
+type ComponentType = "button" | "text" | "price" | "image" | "video" | "space";
 
 export interface ComponentItem {
   type: ComponentType;
