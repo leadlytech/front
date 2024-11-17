@@ -1,19 +1,60 @@
 "use client";
 
-import { ComponentItem } from "@/interfaces";
-import { z } from "zod";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import React, { useState } from 'react';
+import { z } from "zod";
 
-const schema = z.object({});
+import { ComponentItem } from "@/interfaces";
+
+const schema = z.object({
+    textColor: z.string(),
+    content: z.string(),
+});
 
 type Props = {
-  getter: z.infer<typeof schema>;
-  setter: (data: z.infer<typeof schema>) => void;
+    component: ComponentItem<z.infer<typeof schema>>;
+    setter: (data: z.infer<typeof schema>) => void;
 };
 
-export function Options({ getter, setter }: Props) {
-  const [value, setValue] = useState("");
-  return <ReactQuill theme="snow" value={value} onChange={setValue} />;
+export function Options({ component, setter }: Props) {
+    const handleTextChange = (content: string) => {
+        console.log("handleTextChange");
+        console.log(content);
+        setter((prevValue: any) => {
+            return {
+                ...prevValue,
+                content,
+            };
+        });
+    };
+
+    const handleColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setter((prevValue: any) => {
+            return {
+                ...prevValue,
+                textColor: e.target.value,
+            };
+        });
+    };
+
+    return (
+        <div>
+            <label className="block mb-2 text-gray-700">
+                Conteúdo do Texto
+            </label>
+            <ReactQuill
+                theme="snow"
+                value={component.value?.content}
+                onChange={handleTextChange}
+            />
+            <label className="block mt-4 mb-2 text-gray-700">
+                Cor do Texto
+            </label>
+            <input
+                type="color"
+                onChange={handleColorChange}
+                defaultValue={component.value?.textColor || "#000000"}
+            />
+        </div>
+    );
 }
