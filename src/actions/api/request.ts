@@ -22,11 +22,11 @@ interface IMakeApiRequest extends RequestInit {
     };
 }
 
-export async function makeApiRequest(
+export async function makeApiRequest<T = any>(
     actionKey: TApiActionsKeys,
     // action: IAction,
     config?: IApiActionConfig
-): Promise<IResponse> {
+): Promise<IResponse<T>> {
     try {
         console.log("###################################################");
         console.log("###################################################");

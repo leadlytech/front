@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import { ChevronsUpDown, Plus } from "lucide-react";
 
 import {
@@ -19,17 +18,11 @@ import {
 } from "@/components/ui/sidebar";
 
 import { GalleryVerticalEnd } from "lucide-react";
+import { useMain } from "@/context";
 
-export function OrganizationSwitcher({
-    organizations,
-}: {
-    organizations: {
-        name: string;
-        role: string;
-    }[];
-}) {
+export function OrganizationSwitcher() {
     const { isMobile } = useSidebar();
-    const [activeTeam, setActiveTeam] = React.useState(organizations[0]);
+    const { myOrgs, currentOrg, setCurrentOrg } = useMain();
 
     return (
         <SidebarMenu>
@@ -45,10 +38,12 @@ export function OrganizationSwitcher({
                             </div>
                             <div className="grid flex-1 text-left text-sm leading-tight">
                                 <span className="truncate font-semibold">
-                                    {activeTeam.name}
+                                    {currentOrg?.organization.name}
                                 </span>
                                 <span className="truncate text-xs">
-                                    {activeTeam.role}
+                                    {currentOrg?.owner
+                                        ? "Proprietário"
+                                        : "Membro"}
                                 </span>
                             </div>
                             <ChevronsUpDown className="ml-auto" />
@@ -63,13 +58,13 @@ export function OrganizationSwitcher({
                         <DropdownMenuLabel className="text-xs text-muted-foreground">
                             Organizações
                         </DropdownMenuLabel>
-                        {organizations.map((organization, index: number) => (
+                        {myOrgs?.map((org, index: number) => (
                             <DropdownMenuItem
                                 key={index}
-                                onClick={() => setActiveTeam(organization)}
+                                onClick={() => setCurrentOrg(org)}
                                 className="gap-2 p-2 cursor-pointer"
                             >
-                                {organization.name}
+                                {org.organization.name}
                             </DropdownMenuItem>
                         ))}
                         <DropdownMenuSeparator />

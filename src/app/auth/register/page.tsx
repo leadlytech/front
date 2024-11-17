@@ -57,10 +57,10 @@ export default function Page() {
                         await createCookie(
                             "auth",
                             JSON.stringify({
-                                token: logged.payload.payload.token,
+                                token: logged.payload?.payload?.token,
                             }),
                             {
-                                maxAge: 86400,
+                                maxAge: 86400 * 7,
                             }
                         );
 

@@ -1,4 +1,6 @@
-import { ReactNode } from "react";
+"use client";
+
+import { ReactNode, useEffect } from "react";
 
 import { DashBar } from "@/components/custom";
 
@@ -13,8 +15,32 @@ import {
     SidebarInset,
     SidebarTrigger,
 } from "@/components/ui";
+import { useMain } from "@/context";
+import { redirect } from "next/navigation";
+import { routes } from "@/routes";
 
-export default function Layout({ children }: { children: ReactNode }) {
+export default function Layout({
+    children,
+    params,
+}: {
+    children: ReactNode;
+    params: { organizationId: string };
+}) {
+    const { myOrgs, setCurrentOrg } = useMain();
+
+    useEffect(() => {
+        if (myOrgs) {
+            const currentOrgIndex = myOrgs.findIndex(
+                (org) => org.organization.id === params.organizationId
+            );
+
+            if (currentOrgIndex === -1) {
+                return redirect(routes.dashboard._);
+            }
+            setCurrentOrg(myOrgs[currentOrgIndex]);
+        }
+    }, [myOrgs]);
+
     return (
         <>
             <DashBar />

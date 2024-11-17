@@ -1,11 +1,15 @@
 "use client";
 
-import React, { useContext } from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
+import { redirect, RedirectType } from "next/navigation";
 
-import { MainContext } from "@/context";
+import { useMain } from "@/context";
 import { IUserMember } from "@/interfaces";
 import { routes } from "@/routes";
+import { cn } from "@/lib/utils";
+
+import { UserBar } from "@/components/custom";
 
 import {
     Avatar,
@@ -15,11 +19,19 @@ import {
     SidebarInset,
     SidebarTrigger,
 } from "@/components/ui";
-import { UserBar } from "@/components/custom";
-import { cn } from "@/lib/utils";
 
 export default function Page() {
-    const { user } = useContext(MainContext);
+    const { user } = useMain();
+
+    useEffect(() => {
+        if (user?.members.length === 1) {
+            const member = user.members[0];
+            redirect(
+                routes.dashboard.organization.overview(member.organization.id),
+                RedirectType.push
+            );
+        }
+    }, [user]);
 
     return (
         <>
@@ -58,13 +70,13 @@ export default function Page() {
                                 return (
                                     <Link
                                         key={index}
-                                        className="w-full px-4 p-2 flex justify-start items-center gap-8 uppercase bg-muted rounded-md"
+                                        className="w-full max-w-44 p-4 flex flex-col justify-start items-center gap-4 uppercase bg-muted rounded-md"
                                         href={routes.dashboard.organization.overview(
                                             member.organization.id
                                         )}
                                     >
                                         <div className="flex justify-start items-center gap-4">
-                                            <Avatar className="h-8 w-8 bg-background rounded-lg">
+                                            <Avatar className="w-12 h-12 bg-background rounded-lg">
                                                 <AvatarImage
                                                     src={""}
                                                     alt={`${user?.firstName} ${user?.lastName}`.trim()}
@@ -79,22 +91,24 @@ export default function Page() {
                                                         .toUpperCase()}
                                                 </AvatarFallback>
                                             </Avatar>
-                                        </div>
-                                        <div className="w-full max-w-40 flex flex-col gap-1">
-                                            <p className="text-[10px] text-foreground uppercase">
-                                                Organização
-                                            </p>
-                                            <Badge>{name}</Badge>
-                                        </div>
-                                        <div className="w-full max-w-40 flex flex-col gap-1">
-                                            <p className="text-[10px] text-foreground uppercase">
-                                                Acesso
-                                            </p>
-                                            <Badge className="truncate">
-                                                {member.owner
-                                                    ? "Proprietário"
-                                                    : "Membro"}
-                                            </Badge>
+                                            <div className="w-full max-w-40 flex flex-col gap-1 text-[10px] text-foreground uppercase">
+                                                <p className="max-w-20 truncate font-bold">
+                                                    {name}
+                                                </p>
+                                                <p
+                                                    className={cn(
+                                                        "text-blue-500",
+                                                        {
+                                                            "text-yellow-500":
+                                                                member.owner,
+                                                        }
+                                                    )}
+                                                >
+                                                    {member.owner
+                                                        ? "Proprietário"
+                                                        : "Membro"}
+                                                </p>
+                                            </div>
                                         </div>
                                         <div className="w-full max-w-40 flex flex-col gap-1">
                                             <p className="text-[10px] text-foreground uppercase">

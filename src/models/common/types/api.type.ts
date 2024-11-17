@@ -10,11 +10,17 @@ export enum EResponseMessage {
     INVALID_DATA = "INVALID_DATA",
 }
 
+export interface IApiResponse<T = any> {
+    statusCode: number;
+    message?: string;
+    payload?: T;
+}
+
 export interface IResponse<T = any> {
     success: boolean;
     statusCode: number;
     message: EResponseMessage | string;
-    payload?: T;
+    payload?: IApiResponse<T>;
 }
 
 export interface IAction<T extends ZodRawShape = any> {

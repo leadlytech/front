@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useState } from "react";
+import { useState } from "react";
 import {
     BadgeCheck,
     Bell,
@@ -8,8 +8,12 @@ import {
     Settings,
     LogOut,
 } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
-import { MainContext } from "@/context";
+import { useMain } from "@/context";
+import { routes } from "@/routes";
+import { removeCookie } from "@/actions";
 
 import {
     Avatar,
@@ -29,9 +33,16 @@ import {
 } from "@/components/ui";
 
 export function NavUser() {
+    const { user } = useMain();
+    const router = useRouter();
     const { isMobile } = useSidebar();
-    const { user } = useContext(MainContext);
+
     const [name] = useState(`${user?.firstName} ${user?.lastName}`.trim());
+
+    async function handleLogout() {
+        await removeCookie("auth");
+        router.refresh();
+    }
 
     return (
         <SidebarMenu>
@@ -108,10 +119,12 @@ export function NavUser() {
                         </DropdownMenuGroup>
                         <DropdownMenuSeparator />
                         <DropdownMenuGroup>
-                            <DropdownMenuItem className="cursor-pointer">
-                                <BadgeCheck />
-                                Conta
-                            </DropdownMenuItem>
+                            <Link href={routes.account._}>
+                                <DropdownMenuItem className="cursor-pointer">
+                                    <BadgeCheck />
+                                    Conta
+                                </DropdownMenuItem>
+                            </Link>
                             <DropdownMenuItem
                                 className="cursor-pointer"
                                 disabled
@@ -121,7 +134,10 @@ export function NavUser() {
                             </DropdownMenuItem>
                         </DropdownMenuGroup>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem className="cursor-pointer">
+                        <DropdownMenuItem
+                            className="cursor-pointer"
+                            onClick={handleLogout}
+                        >
                             <LogOut />
                             Sair
                         </DropdownMenuItem>

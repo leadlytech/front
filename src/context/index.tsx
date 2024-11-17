@@ -1,8 +1,8 @@
 "use client";
 
-import MainProvider, { MainContext } from "./main.context";
+import MainProvider, { MainContext, useMain } from "./main.context";
 
-export { MainProvider, MainContext };
+export { MainProvider, MainContext, useMain };
 export function ContextProviders({ children }: { children: React.ReactNode }) {
     return <MainProvider>{children}</MainProvider>;
 }

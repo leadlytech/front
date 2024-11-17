@@ -2,8 +2,8 @@
 
 import * as React from "react";
 
-import { NavUser } from "./nav-user";
-import { OrganizationSwitcher } from "./organizationSwitcher";
+import { NavUser } from "./navUser";
+import { OrganizationSwitcher } from "./orgSwitcher";
 import {
     ScrollArea,
     Sidebar,
@@ -136,7 +136,7 @@ export function DashBar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     return (
         <Sidebar collapsible="icon" {...props}>
             <SidebarHeader>
-                <OrganizationSwitcher organizations={data.teams} />
+                <OrganizationSwitcher />
             </SidebarHeader>
             <SidebarContent>
                 <ScrollArea>
