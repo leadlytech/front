@@ -2,38 +2,32 @@
 
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { z } from "zod";
 
-import { ComponentItem } from "@/interfaces";
-
-const schema = z.object({
-    textColor: z.string(),
-    content: z.string(),
-});
+import { TComponent, TSchema } from "./dto";
 
 type Props = {
-    component: ComponentItem<z.infer<typeof schema>>;
-    setter: (data: z.infer<typeof schema>) => void;
+    component: TComponent;
+    onEdit: (data: Partial<TSchema>) => void;
 };
 
-export function Options({ component, setter }: Props) {
+export function Options({ component, onEdit }: Props) {
     const handleTextChange = (content: string) => {
-        console.log("handleTextChange");
-        console.log(content);
-        setter((prevValue: any) => {
-            return {
-                ...prevValue,
-                content,
-            };
-        });
+        if (component.value?.content !== content) {
+            onEdit({
+                value: {
+                    ...component.value,
+                    content,
+                },
+            });
+        }
     };
 
     const handleColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setter((prevValue: any) => {
-            return {
-                ...prevValue,
+        onEdit({
+            value: {
+                ...component.value,
                 textColor: e.target.value,
-            };
+            },
         });
     };
 

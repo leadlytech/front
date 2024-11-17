@@ -41,7 +41,7 @@ export function ComponentControl({
 
   return (
       <div className="p-4 bg-gray-100 shadow-md rounded border border-gray-300 space-y-4">
-          <RenderOptions component={component} setter={onEdit} />
+          <RenderOptions component={component} onEdit={onEdit} />
           {component.type === "button" && (
               <div>
                   <label className="block mb-2 text-gray-700">

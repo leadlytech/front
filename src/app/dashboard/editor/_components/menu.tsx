@@ -3,18 +3,14 @@
 import { ComponentItem } from "@/interfaces";
 import React, { useRef, useEffect } from "react";
 
+import { textDefault } from "./components";
+
 const availableComponents: Array<ComponentItem> = [
     {
         label: "Botão",
         type: "button",
     },
-    {
-        label: "Texto",
-        type: "text",
-        value: {
-            content: "Meu texto",
-        },
-    },
+    { ...textDefault },
     {
         label: "Preço",
         type: "price",

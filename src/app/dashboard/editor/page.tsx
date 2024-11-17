@@ -19,6 +19,9 @@ export default function Page() {
     };
 
     const handleEditComponent = (updates: Partial<ComponentItem>) => {
+        console.log("selectedIndex");
+        console.log(selectedIndex);
+        console.log(updates);
         if (selectedIndex !== null) {
             setComponents((prev) => {
                 const updatedComponents = [...prev];
@@ -45,7 +48,6 @@ export default function Page() {
                 </div>
             </div>
 
-            {/* Lista de Componentes - Quadrado Azul */}
             <EditorMenu />
 
             {/* Botão para abrir/fechar a Sidebar */}

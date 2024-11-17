@@ -35,13 +35,13 @@ export function RenderComponent({ component }: ComponentProps) {
 
 type OptionProps = {
     component: ComponentItem;
-    setter: (data: any) => void;
+    onEdit: (data: any) => void;
 };
 
-export function RenderOptions({ component, setter }: OptionProps) {
+export function RenderOptions({ component, onEdit }: OptionProps) {
     switch (component.type) {
         case "text":
-            return <TextOptions component={component} setter={setter} />;
+            return <TextOptions component={component} onEdit={onEdit} />;
         default:
             return undefined;
     }
