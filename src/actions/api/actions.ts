@@ -87,7 +87,7 @@ export const apiActions = {
         method: EHttpMethods.PATCH,
         schema: updateFunnelSchema,
     },
-    deleteFunnel: {
+    removeFunnel: {
         path: "/v1/organizations/{organizationId}/funnels/{id}",
         method: EHttpMethods.DELETE,
     },

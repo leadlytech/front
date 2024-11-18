@@ -4,14 +4,14 @@ export interface IListOffset<T = never> {
     count: number;
     take: number;
     current: number;
-    data?: Partial<T>[];
+    data: Array<T>;
 }
 
 export interface IListCursor<T = never> {
     nextCursor: string;
     take: number;
     current: number;
-    data?: Partial<T>[];
+    data: Array<T>;
 }
 
 export type TList<T = never> = IListOffset<T> | IListCursor<T>;

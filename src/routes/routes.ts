@@ -19,6 +19,9 @@ export const routes = {
             funnels: {
                 overview: (organizationId: string) =>
                     `/dashboard/${organizationId}/funnels`,
+                get: (organizationId: string, id: string) =>
+                    `/dashboard/${organizationId}/funnels/${id}`,
+                view: (id: string) => `/f/${id}`,
             },
         },
     },
