@@ -95,7 +95,7 @@ function DesignArea() {
           </div>
           <div
             key={`component-${index}`}
-            className="bg-white p-4 rounded-md border border-gray-300"
+            className="bg-white p-4 rounded-md border border-gray-400"
           >
             {component.label}
           </div>
@@ -118,7 +118,7 @@ function DesignArea() {
 export function EditorMenu() {
   return (
     <div
-      className="absolute top-0 left-[250px] h-full bg-blue-500 z-15 transition-transform duration-300 translate-x-0"
+      className="absolute top-0 left-[250px] h-full bg-gray-500 z-15 transition-transform duration-300 translate-x-0"
       style={{ width: "120px" }}
     >
       <div className="space-y-2 p-4">
