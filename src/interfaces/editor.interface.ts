@@ -1,13 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { CSSProperties } from "react";
-
 type ComponentType = "button" | "text" | "price" | "image" | "video" | "space";
 
-export interface ComponentItem<T = any> {
+export interface ComponentItem<S = any, V = any> {
     id?: string;
     label: string;
     type: ComponentType;
-    style?: CSSProperties;
-    config?: any;
-    value?: T;
+    style?: S; // Usando quando precisa alterar alguma característica visual do componente
+    value?: V; // Usando para definir valores e comportamentos para o componente
 }

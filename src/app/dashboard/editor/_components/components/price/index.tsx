@@ -6,13 +6,14 @@ type Props = {
 
 export function PriceComponent({ component }: Props) {
   return (
-    <div className="flex flex-col p-4 bg-gray-100 border border-gray-300 rounded text-center">
-      <span className="text-sm font-medium">{component.label}</span>
-      <span className="text-sm">{component.prefix}</span>
-      <span className="text-xl font-bold">
-        R$ {component.value?.toFixed(2)}
-      </span>
-      <span className="text-sm">{component.suffix}</span>
+    <div className="flex items-center border border-gray-300 rounded-lg p-4">
+      <div className="flex-grow">
+      </div>
+      <div className="bg-gray-100 p-2 rounded-lg text-right">
+        <p className="text-sm text-gray-500">10% off</p>
+        <p className="text-2xl font-bold text-black">R$ 89,90</p>
+        <p className="text-sm text-gray-500">à vista</p>
+      </div>
     </div>
   );
 }

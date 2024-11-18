@@ -45,10 +45,21 @@ export default function Page() {
             >
                 <div className="p-4">
                     <h1 className="text-xl font-bold mb-4">Sidebar</h1>
+                    <EditorMenu />
                 </div>
             </div>
 
-            <EditorMenu />
+            {/* Lista de Componentes - Quadrado Azul */}
+            <div className="flex-none w-[120px] bg-blue-500 p-4 space-y-2">
+                {/* Botões dos Componentes */}
+                <button className="w-full p-2 bg-gray-200 text-gray-700 rounded-lg border border-gray-500 mb-2 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400">
+                    Botão
+                </button>
+                <button className="w-full p-2 bg-gray-200 text-gray-700 rounded-lg border border-gray-500 mb-2 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400">
+                    Texto
+                </button>
+                {/* Adicione mais botões conforme necessário */}
+            </div>
 
             {/* Botão para abrir/fechar a Sidebar */}
             <button
@@ -83,10 +94,10 @@ export default function Page() {
             </button>
 
             {/* Quadrado Verde Esquerdo */}
-            <div className="flex-none w-1/5 bg-green-500"></div>
+            <div className="flex-none w-1/5 bg-gray-500"></div>
 
             {/* Quadrado Vermelho Central */}
-            <div className="flex-grow bg-red-500 flex items-center justify-center">
+            <div className="flex-grow bg-gray-500 flex items-center justify-center">
                 <div className="w-3/4 h-3/4">
                     <DesignArea
                         onSelectComponent={handleSelectComponent}

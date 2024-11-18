@@ -6,12 +6,11 @@ type Props = {
 
 export function VideoComponent({ component }: Props) {
   return (
-    <input
-      type="video"
-      value={component.label}
-      readOnly
+    <button
+      className="w-full p-2 bg-blue-500 text-white rounded-lg border border-blue-700 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
       style={component.style}
-      className="w-full p-2 bg-gray-100 text-gray-700 rounded-lg border border-gray-300 mb-2"
-    />
+    >
+      {component.label}
+    </button>
   );
 }

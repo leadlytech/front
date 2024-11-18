@@ -2,25 +2,24 @@ import { z } from "zod";
 
 import { ComponentItem } from "@/interfaces";
 
-export const valueSchema = z.object({
-  content: z.string().optional(),
+// Inclui apenas largura e altura no esquema de estilos
+export const styleSchema = z.object({
+  width: z.string().optional(),
+  height: z.string().optional(),
 });
 
-export const styleSchema = z.object({
-  textColor: z.string().optional(),
-});
+export const valueSchema = z.object({});
 
 export type TValueSchema = z.infer<typeof valueSchema>;
 export type TStyleSchema = z.infer<typeof styleSchema>;
 export type TComponent = ComponentItem<TStyleSchema, TValueSchema>;
 
 export const componentDefault: TComponent = {
-  label: "Texto",
-  type: "text",
+  label: "Espaço",
+  type: "space",
   style: {
-    textColor: "#000000",
+    width: "100px",
+    height: "100px",
   },
-  value: {
-    content: "Meu texto",
-  },
+  value: {},
 };
