@@ -1,5 +1,6 @@
 export * from "./bars";
+export * from "./copyButton";
 export * from "./icons";
 export * from "./loading";
-export * from "./bars/dashBar";
+export * from "./tables";
 export * from "./theme";

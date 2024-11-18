@@ -1,9 +1,14 @@
 "use client";
 
-import * as React from "react";
+import Link from "next/link";
 
 import { NavUser } from "./navUser";
 import { OrganizationSwitcher } from "./orgSwitcher";
+import { useMain } from "@/context";
+import { routes } from "@/routes";
+
+import { GetIcon } from "@/components/custom";
+
 import {
     ScrollArea,
     Sidebar,
@@ -19,38 +24,22 @@ import {
     SidebarMenuButton,
 } from "@/components/ui";
 
-import Link from "next/link";
-import { GetIcon } from "../../icons";
+export function DashBar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+    const { currentOrg } = useMain();
 
-// This is sample data.
-const data = {
-    teams: [
-        {
-            name: "Acme Inc",
-            role: "PROPRIETÁRIO",
-        },
-        {
-            name: "Acme Corp.",
-            role: "MEMBRO",
-        },
-        {
-            name: "Evil Corp.",
-            role: "MEMBRO",
-        },
-    ],
-    navMain: [
+    const nav = (organizationId: string) => [
         {
             title: "Dashboard",
             items: [
                 {
                     title: "Visão Geral",
                     icon: "TbView360",
-                    url: "#",
+                    url: routes.dashboard.organization.overview(organizationId),
                 },
                 {
                     title: "Relatórios",
                     icon: "HiDocumentReport",
-                    url: "#",
+                    url: routes.dashboard.organization.overview(organizationId),
                 },
             ],
         },
@@ -60,12 +49,12 @@ const data = {
                 {
                     title: "Leads",
                     icon: "HiUsers",
-                    url: "#",
+                    url: routes.dashboard.organization.overview(organizationId),
                 },
                 {
                     title: "Segmentações",
                     icon: "BsFillSignpostSplitFill",
-                    url: "#",
+                    url: routes.dashboard.organization.overview(organizationId),
                 },
             ],
         },
@@ -75,12 +64,14 @@ const data = {
                 {
                     title: "Links",
                     icon: "FaLink",
-                    url: "#",
+                    url: routes.dashboard.organization.overview(organizationId),
                 },
                 {
                     title: "Funis de vendas",
                     icon: "AiFillFunnelPlot",
-                    url: "#",
+                    url: routes.dashboard.organization.funnels.overview(
+                        organizationId
+                    ),
                 },
             ],
         },
@@ -90,7 +81,7 @@ const data = {
                 {
                     title: "API",
                     icon: "AiFillApi",
-                    url: "#",
+                    url: routes.dashboard.organization.overview(organizationId),
                 },
             ],
         },
@@ -100,17 +91,17 @@ const data = {
                 {
                     title: "Equipe",
                     icon: "FaUsers",
-                    url: "#",
+                    url: routes.dashboard.organization.overview(organizationId),
                 },
                 {
                     title: "Assinaturas",
                     icon: "MdPaid",
-                    url: "#",
+                    url: routes.dashboard.organization.overview(organizationId),
                 },
                 {
                     title: "Configurações",
                     icon: "IoMdSettings",
-                    url: "#",
+                    url: routes.dashboard.organization.overview(organizationId),
                 },
             ],
         },
@@ -120,19 +111,17 @@ const data = {
                 {
                     title: "Suporte",
                     icon: "MdContactSupport",
-                    url: "#",
+                    url: routes.dashboard.organization.overview(organizationId),
                 },
                 {
                     title: "Termos de uso",
                     icon: "GoLaw",
-                    url: "#",
+                    url: routes.terms,
                 },
             ],
         },
-    ],
-};
+    ];
 
-export function DashBar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     return (
         <Sidebar collapsible="icon" {...props}>
             <SidebarHeader>
@@ -140,7 +129,7 @@ export function DashBar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             </SidebarHeader>
             <SidebarContent>
                 <ScrollArea>
-                    {data.navMain.map((item) => (
+                    {nav(currentOrg?.organization.id || "").map((item) => (
                         <SidebarGroup key={item.title}>
                             <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
                             <SidebarGroupContent>

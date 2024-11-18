@@ -1,3 +1,3 @@
 export default function Page() {
-    return <div className="flex">Olá mundo!</div>;
+    return <div className="flex">Visão geral</div>;
 }

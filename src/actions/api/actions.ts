@@ -1,9 +1,13 @@
 import {
     changeUserPassSchema,
+    createFunnelSchema,
+    createOrgSchema,
     EHttpMethods,
     loginSchema,
     recoverySchema,
     registerSchema,
+    updateFunnelSchema,
+    updateOrgSchema,
     userSchema,
 } from "@/models";
 
@@ -35,13 +39,57 @@ export const apiActions = {
     },
     updateMe: {
         path: "/v1/account",
-        method: EHttpMethods.POST,
+        method: EHttpMethods.PATCH,
         schema: userSchema,
     },
     updateMePass: {
         path: "/v1/account",
-        method: EHttpMethods.POST,
+        method: EHttpMethods.PATCH,
         schema: changeUserPassSchema,
+    },
+
+    // ========== ORGANIZATION
+    createOrganization: {
+        path: "/v1/organization",
+        method: EHttpMethods.POST,
+        schema: createOrgSchema,
+    },
+    getOrganization: {
+        path: "/v1/organization/{id}",
+        method: EHttpMethods.GET,
+    },
+    updateOrganization: {
+        path: "/v1/organization/{id}",
+        method: EHttpMethods.PATCH,
+        schema: updateOrgSchema,
+    },
+    deleteOrganization: {
+        path: "/v1/organization/{id}",
+        method: EHttpMethods.DELETE,
+    },
+
+    // ========== FUNNELS
+    createFunnel: {
+        path: "/v1/organizations/{organizationId}/funnels",
+        method: EHttpMethods.POST,
+        schema: createFunnelSchema,
+    },
+    listFunnels: {
+        path: "/v1/organizations/{organizationId}/funnels",
+        method: EHttpMethods.GET,
+    },
+    getFunnel: {
+        path: "/v1/organizations/{organizationId}/funnels/{id}",
+        method: EHttpMethods.GET,
+    },
+    updateFunnel: {
+        path: "/v1/organizations/{organizationId}/funnels/{id}",
+        method: EHttpMethods.PATCH,
+        schema: updateFunnelSchema,
+    },
+    deleteFunnel: {
+        path: "/v1/organizations/{organizationId}/funnels/{id}",
+        method: EHttpMethods.DELETE,
     },
 };
 

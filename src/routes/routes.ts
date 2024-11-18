@@ -16,6 +16,10 @@ export const routes = {
         organization: {
             overview: (organizationId: string) =>
                 `/dashboard/${organizationId}`,
+            funnels: {
+                overview: (organizationId: string) =>
+                    `/dashboard/${organizationId}/funnels`,
+            },
         },
     },
 };

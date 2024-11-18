@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, useEffect } from "react";
+import { Fragment, ReactNode, useEffect } from "react";
 
 import { DashBar } from "@/components/custom";
 
@@ -16,7 +16,7 @@ import {
     SidebarTrigger,
 } from "@/components/ui";
 import { useMain } from "@/context";
-import { redirect } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
 import { routes } from "@/routes";
 
 export default function Layout({
@@ -26,7 +26,8 @@ export default function Layout({
     children: ReactNode;
     params: { organizationId: string };
 }) {
-    const { myOrgs, setCurrentOrg } = useMain();
+    const pathname = usePathname();
+    const { myOrgs, currentOrg, setCurrentOrg } = useMain();
 
     useEffect(() => {
         if (myOrgs) {
@@ -55,16 +56,30 @@ export default function Layout({
                         <Breadcrumb>
                             <BreadcrumbList>
                                 <BreadcrumbItem className="hidden md:block">
-                                    <BreadcrumbLink href="#">
-                                        Building Your Application
+                                    <BreadcrumbLink
+                                        href={routes.dashboard.organization.overview(
+                                            currentOrg?.organization.id || ""
+                                        )}
+                                    >
+                                        {currentOrg?.organization.name}
                                     </BreadcrumbLink>
                                 </BreadcrumbItem>
-                                <BreadcrumbSeparator className="hidden md:block" />
-                                <BreadcrumbItem>
-                                    <BreadcrumbPage>
-                                        Data Fetching
-                                    </BreadcrumbPage>
-                                </BreadcrumbItem>
+                                {pathname
+                                    .substring(1)
+                                    .split("/")
+                                    .slice(2)
+                                    .map((path) => {
+                                        return (
+                                            <Fragment key={path}>
+                                                <BreadcrumbSeparator className="hidden md:block" />
+                                                <BreadcrumbItem className="hidden md:block">
+                                                    <BreadcrumbPage>
+                                                        {path}
+                                                    </BreadcrumbPage>
+                                                </BreadcrumbItem>
+                                            </Fragment>
+                                        );
+                                    })}
                             </BreadcrumbList>
                         </Breadcrumb>
                     </div>
