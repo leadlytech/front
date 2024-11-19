@@ -12,12 +12,14 @@ import {
     spaceDefault,
 } from "./components";
 
+import { GetIcon } from "@/components/custom";
+
 import { Button, ScrollArea } from "@/components/ui";
 
 // Componentes disponíveis para arrastar
 const availableComponents: Array<ComponentItem> = [
-    { ...buttonDefault },
     { ...textDefault },
+    { ...buttonDefault },
     { ...priceDefault },
     { ...videoDefault },
     { ...imageDefault },
@@ -60,7 +62,13 @@ function DraggableButton({ component }: Props) {
     }, [component]);
 
     return (
-        <Button ref={ref} className="w-full mb-2" variant="outline" draggable>
+        <Button
+            ref={ref}
+            className="w-full mb-2 flex justify-start items-center gap-2"
+            variant="outline"
+            draggable
+        >
+            <GetIcon icon={component.icon} className="w-6 h-6" />
             {component.label}
         </Button>
     );

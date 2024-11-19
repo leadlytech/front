@@ -16,6 +16,7 @@ export type TComponent = ComponentItem<TStyleSchema, TValueSchema>;
 
 export const componentDefault: TComponent = {
     label: "Botão",
+    icon: "IoMdRadioButtonOn",
     type: "button",
     style: {
         backgroundColor: "#000000",

@@ -16,6 +16,7 @@ export type TComponent = ComponentItem<TStyleSchema, TValueSchema>;
 
 export const componentDefault: TComponent = {
     label: "Preço",
+    icon: "PiCoinVerticalFill",
     type: "price",
     style: {
         textColor: "#000000",
