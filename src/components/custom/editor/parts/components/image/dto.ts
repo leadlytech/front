@@ -1,14 +1,14 @@
 import { z } from "zod";
 
 import { ComponentItem } from "@/interfaces";
-import { Options } from "./options";
 
 export const valueSchema = z.object({
-  content: z.string().optional(),
+  url: z.string().optional(),
 });
 
 export const styleSchema = z.object({
-  textColor: z.string().optional(),
+  bgColor: z.string().optional(),
+  borderRadius: z.string().optional(),
 });
 
 export type TValueSchema = z.infer<typeof valueSchema>;
@@ -16,13 +16,12 @@ export type TStyleSchema = z.infer<typeof styleSchema>;
 export type TComponent = ComponentItem<TStyleSchema, TValueSchema>;
 
 export const componentDefault: TComponent = {
-  label: "Texto",
-  type: "text",
+  label: "Imagem",
+  type: "image",
   style: {
-    textColor: "#000000",
+    bgColor: "transparent",
   },
   value: {
-    content: "Meu texto",
+    url: "",
   },
 };
-

@@ -29,7 +29,7 @@ import { makeApiRequest } from "@/actions";
 import Sidebar from "./sidebar";
 import { DnDProvider, useDnD } from "./DnDContext";
 
-import { GetIcon } from "@/components/custom";
+import { GetIcon, Editor } from "@/components/custom";
 
 import { Button, SidebarProvider } from "@/components/ui";
 import { IFunnel } from "@/models";
@@ -259,6 +259,7 @@ function DnDFlow(props: Props) {
     return (
         <div className="w-full h-full flex flex-col justify-center gap-2">
             <div className="flex gap-8 justify-end items-center">
+                <Editor />
                 <div className="hidden gap-2 justify-center items-center">
                     <Button
                         size="icon"
