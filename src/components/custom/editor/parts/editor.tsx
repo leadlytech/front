@@ -153,7 +153,9 @@ export function DesignArea({
                     </div>
                 ) : undefined}
                 {components.map((component: ComponentItem, index) => {
-                    const isHovered = index === elementHoverIndex;
+                    const isHovered = liveMode
+                        ? false
+                        : index === elementHoverIndex;
                     return (
                         <React.Fragment key={index}>
                             {previewIndex === index && (
@@ -165,7 +167,7 @@ export function DesignArea({
                                 </div>
                             )}
                             <div
-                                draggable={dragEnabled}
+                                draggable={liveMode ? false : dragEnabled}
                                 onDragStart={() => {
                                     if (!dragEnabled) return;
                                     setDraggedIndex(index);
@@ -192,8 +194,9 @@ export function DesignArea({
                                     setElementHoverIndex(undefined)
                                 }
                                 className={cn(
-                                    "w-full max-w-sm border-2 border-transparent cursor-move",
+                                    "w-full max-w-sm border-2 border-transparent",
                                     {
+                                        "cursor-move": !liveMode,
                                         "relative border-blue-500 rounded-md":
                                             isHovered,
                                     }

@@ -33,8 +33,8 @@ export default function Page(props: Props) {
             if (res.success) {
                 const payload = res.payload?.payload;
                 if (payload) {
-                    console.log("payload");
-                    console.log(payload);
+                    // console.log("payload");
+                    // console.log(payload);
 
                     const newNodes = payload.Step?.map((step) => {
                         return {
@@ -53,27 +53,46 @@ export default function Page(props: Props) {
                         };
                     });
 
+                    if (newEdges.length) {
+                        setEdges(newEdges);
+                    }
+
                     if (newNodes.length) {
                         setNodes(newNodes);
 
-                        const startNodeIndex = newNodes.findIndex((newNode) => {
-                            newNode.type === ENodeType.START;
-                        });
+                        let startNodeIndex = -1;
+
+                        for (const nodeIndex in newNodes) {
+                            const node = newNodes[nodeIndex];
+                            if (node.type === ENodeType.START) {
+                                startNodeIndex = nodeIndex as unknown as number;
+                                break;
+                            }
+                        }
 
                         if (startNodeIndex !== -1) {
-                            setCurrentNodeIndex(startNodeIndex);
+                            const startNodeEdges = newEdges.filter(
+                                (edge) =>
+                                    edge.source === newNodes[startNodeIndex].id
+                            );
+
+                            if (startNodeEdges.length) {
+                                let nextNodeIndex = -1;
+
+                                for (const nodeIndex in newNodes) {
+                                    const node = newNodes[nodeIndex];
+                                    if (node.id === startNodeEdges[0].target) {
+                                        nextNodeIndex =
+                                            nodeIndex as unknown as number;
+                                        break;
+                                    }
+                                }
+
+                                setCurrentNodeIndex(nextNodeIndex);
+                            }
+
+                            // setCurrentNodeIndex(startNodeIndex);
                         }
-                        // const startNode = newNodes.filter(
-                        //     (newNode) => newNode.type === ENodeType.START
-                        // );
-
-                        // if (startNode.length) {
-                        //     setCurrentNodeId(startNode[0].id);
-                        // }
-                    }
-
-                    if (newEdges.length) {
-                        setEdges(newEdges);
                     }
                 }
                 return;
@@ -86,36 +105,45 @@ export default function Page(props: Props) {
     }, []);
 
     function goToNextNode() {
+        console.log("nodes");
+        console.log(nodes);
+        console.log("edges");
+        console.log(edges);
+
         const currentNodeEdges = edges.filter(
             (edge) => edge.source === nodes[currentNodeIndex].id
         );
+
+        console.log(currentNodeEdges);
 
         if (currentNodeEdges.length) {
             const nextNodeIndex = nodes.findIndex((node) => {
                 node.id === currentNodeEdges[0].target;
             });
 
+            console.log(nextNodeIndex);
+
             setCurrentNodeIndex(nextNodeIndex);
         }
     }
 
-    useEffect(() => {
-        if (currentNodeIndex !== -1) {
-            const currentNode = nodes[currentNodeIndex];
-            if (currentNode.type === ENodeType.START) {
-                goToNextNode();
-            }
-        }
-    }, [currentNodeIndex]);
+    // useEffect(() => {
+    //     if (currentNodeIndex !== -1) {
+    //         const currentNode = nodes[currentNodeIndex];
+    //         if (currentNode.type === ENodeType.START) {
+    //             goToNextNode();
+    //         }
+    //     }
+    // }, [currentNodeIndex]);
 
     return (
-        <div>
+        <div className="w-full h-screen">
             {currentNodeIndex !== -1 &&
             nodes[currentNodeIndex].data &&
             nodes[currentNodeIndex].data.components &&
             nodes[currentNodeIndex].data.components.length ? (
                 <DesignArea
-                    components={nodes[currentNodeIndex].data}
+                    components={nodes[currentNodeIndex].data?.components || []}
                     setComponents={() => {}}
                     onSelectComponent={() => {}}
                     liveMode={true}
