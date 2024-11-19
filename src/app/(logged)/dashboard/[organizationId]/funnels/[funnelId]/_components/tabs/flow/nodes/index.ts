@@ -1,6 +1,12 @@
 import { MemoExoticComponent } from "react";
 
-import { DefineNode, CustomNodeProps, TNodeTypes } from "./baseNode";
+import {
+    DefineNode,
+    CustomNodeProps,
+    TNodeTypes,
+    ENodeType,
+    TEdge,
+} from "./baseNode";
 
 import { PageNode, defaultNodeData as defaultPageData } from "./pageNode";
 import { StartNode, defaultNodeData as defaultStartData } from "./startNode";
@@ -13,7 +19,8 @@ export const nodeTypes: Record<
     START: StartNode,
 };
 
-export type { DefineNode, CustomNodeProps, TNodeTypes };
+export { ENodeType };
+export type { DefineNode, CustomNodeProps, TNodeTypes, TEdge };
 
 export const defaultNodesData = {
     PAGE: { ...defaultPageData },

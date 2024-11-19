@@ -10,6 +10,11 @@ import { Button } from "@/components/ui";
 
 export type TNodeTypes = "START" | "PAGE";
 
+export enum ENodeType {
+    START = "START",
+    PAGE = "PAGE",
+}
+
 export type DefineNode<T = any> = {
     id: string;
     type?: TNodeTypes;
@@ -18,7 +23,13 @@ export type DefineNode<T = any> = {
         x: number;
         y: number;
     };
-    data?: T;
+    data: T;
+};
+
+export type TEdge = {
+    id: string;
+    source: string;
+    target: string;
 };
 
 export type CustomNodeProps<T = any> = Omit<NodeProps, "data"> & {

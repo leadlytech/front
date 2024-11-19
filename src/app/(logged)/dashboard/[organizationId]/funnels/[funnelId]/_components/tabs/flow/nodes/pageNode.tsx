@@ -8,7 +8,7 @@ import { BaseNode, CustomNodeProps } from "./baseNode";
 import { GetIcon } from "@/components/custom";
 
 export type NodeData = {
-    title: string;
+    name: string;
     components?: Array<{
         icon: string;
         title: string;
@@ -17,24 +17,21 @@ export type NodeData = {
 };
 
 export const defaultNodeData: NodeData = {
-    title: "Minha página",
+    name: "Minha página",
     components: [],
 };
 
 export const PageNode = memo((props: CustomNodeProps<NodeData>) => {
     const data = props.data;
-    const onChange = useCallback((evt) => {
-        console.log(evt.target.value);
-    }, []);
 
     return (
         <BaseNode node={props}>
             <>
                 <div className="flex flex-col items-center gap-2">
-                    <h1>{data.title}</h1>
-                    <div className="flex flex-col gap-2">
-                        {data.components &&
-                            data.components.map((component, index: number) => (
+                    <h1>{data.name}</h1>
+                    {data.components && data.components.length ? (
+                        <div className="flex flex-col gap-2">
+                            {data.components.map((component, index: number) => (
                                 <div
                                     key={index}
                                     className="p-2 flex gap-2 justify-start items-center border rounded-sm"
@@ -55,7 +52,8 @@ export const PageNode = memo((props: CustomNodeProps<NodeData>) => {
                                     ) : undefined}
                                 </div>
                             ))}
-                    </div>
+                        </div>
+                    ) : undefined}
                 </div>
                 <Handle
                     type="target"

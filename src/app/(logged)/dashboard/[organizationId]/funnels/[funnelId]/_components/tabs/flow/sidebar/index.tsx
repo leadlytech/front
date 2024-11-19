@@ -21,6 +21,7 @@ interface INode {
     name: string;
     icon: string;
     type: string;
+    disabled?: boolean;
 }
 
 const availableNodes: INode[] = [
@@ -33,11 +34,13 @@ const availableNodes: INode[] = [
         name: "Webhook",
         icon: "MdWebhook",
         type: "WEBHOOK",
+        disabled: true,
     },
     {
         name: "Link",
         icon: "FaLink",
         type: "REDIRECT",
+        disabled: true,
     },
 ];
 
@@ -93,9 +96,19 @@ export default function SidebarComponent() {
                             {availableNodes.map((node) => (
                                 <div
                                     key={node.type}
-                                    className="p-2 flex justify-start items-center gap-2 cursor-pointer border-l-2 border-transparent hover:border-green-500"
+                                    className={cn(
+                                        "p-2 flex justify-start items-center gap-2 cursor-pointer border-l-2 border-transparent hover:border-green-500",
+                                        {
+                                            "text-muted-foreground":
+                                                node.disabled,
+                                            "cursor-not-allowed": node.disabled,
+                                            "hover:border-none": node.disabled,
+                                        }
+                                    )}
                                     onDragStart={(event) =>
-                                        onDragStart(event, node.type)
+                                        node.disabled
+                                            ? undefined
+                                            : onDragStart(event, node.type)
                                     }
                                     draggable
                                 >

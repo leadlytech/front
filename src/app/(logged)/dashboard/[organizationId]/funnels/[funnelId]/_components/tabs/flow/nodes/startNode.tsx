@@ -5,7 +5,7 @@ import { Handle, Position } from "@xyflow/react";
 
 import { BaseNode, CustomNodeProps } from "./baseNode";
 
-type NodeData = {};
+type NodeData = object;
 
 export const defaultNodeData: NodeData = {};
 

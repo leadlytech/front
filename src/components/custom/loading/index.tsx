@@ -7,7 +7,7 @@ export function Loading() {
     return (
         <div className="flex flex-col justify-center items-center gap-4">
             <Image
-                src="/assets/images/logo.png"
+                src="/assets/svgs/logo.svg"
                 alt="logo"
                 width={120}
                 height={120}

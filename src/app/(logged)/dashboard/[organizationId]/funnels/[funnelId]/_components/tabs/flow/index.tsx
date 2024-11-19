@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import {
     ReactFlow,
     ReactFlowProvider,
@@ -15,13 +15,24 @@ import {
     useReactFlow,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
+import { toast } from "sonner";
 
-import { defaultNodesData, DefineNode, nodeTypes } from "./nodes";
+import {
+    defaultNodesData,
+    DefineNode,
+    ENodeType,
+    nodeTypes,
+    TEdge,
+} from "./nodes";
+import { makeApiRequest } from "@/actions";
 
 import Sidebar from "./sidebar";
 import { DnDProvider, useDnD } from "./DnDContext";
 
-import { SidebarProvider } from "@/components/ui";
+import { GetIcon } from "@/components/custom";
+
+import { Button, SidebarProvider } from "@/components/ui";
+import { IFunnel } from "@/models";
 
 type Props = {
     params: {
@@ -91,9 +102,10 @@ type Props = {
 //     { id: "e1-2", source: "1", target: "2", animated: true },
 // ];
 
-function DnDFlow() {
+function DnDFlow(props: Props) {
     const reactFlowWrapper = useRef(null);
-    const [nodes, setNodes, onNodesChange] = useNodesState([
+    const [isPending, startTransition] = useTransition();
+    const [nodes, setNodes, onNodesChange] = useNodesState<DefineNode>([
         {
             id: String(new Date().getTime()),
             type: "START",
@@ -102,17 +114,14 @@ function DnDFlow() {
             data: {},
         },
     ]);
-    const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+    const [edges, setEdges, onEdgesChange] = useEdgesState<TEdge>([]);
     const { screenToFlowPosition } = useReactFlow();
     const [type] = useDnD();
 
-    // Listeners para obter os eventos React Flow
-    useEffect(() => {
-        console.log("nodes");
-        console.log(nodes);
-        console.log("edges");
-        console.log(edges);
-    }, [nodes, edges]);
+    const [historyIndex, setHistoryIndex] = useState<number>(0);
+    const [history, setHistory] = useState<
+        Array<{ nodes: any[]; edges: any[] }>
+    >([]);
 
     const onConnect = useCallback(
         (params) =>
@@ -151,8 +160,129 @@ function DnDFlow() {
         [screenToFlowPosition, type]
     );
 
+    async function fetchData() {
+        startTransition(async () => {
+            const res = await makeApiRequest<IFunnel>("getFunnel", {
+                params: {
+                    organizationId: props.params.organizationId,
+                    id: props.params.funnelId,
+                },
+            });
+
+            if (res.success) {
+                const payload = res.payload?.payload;
+                if (payload) {
+                    const newNodes = payload.Step?.map((step) => {
+                        return {
+                            id: step.id,
+                            type: step.type,
+                            draggable: step.type !== ENodeType.START,
+                            position: step.config.position,
+                            data: step.data,
+                        };
+                    });
+                    const newEdges = payload.Edge?.map((edge) => {
+                        return {
+                            id: edge.id,
+                            source: edge.destinyId,
+                            target: edge.originId,
+                        };
+                    });
+
+                    if (newNodes.length) {
+                        setNodes(newNodes);
+                    }
+
+                    if (newEdges.length) {
+                        setEdges(newEdges);
+                    }
+                    setHistoryIndex(0);
+                }
+                return;
+            }
+
+            toast.error(res.message);
+        });
+    }
+
+    function handleSaveFunnel() {
+        startTransition(async () => {
+            const res = await makeApiRequest("updateFunnel", {
+                params: {
+                    organizationId: props.params.organizationId,
+                    id: props.params.funnelId,
+                },
+                data: {
+                    steps: nodes.map((node) => ({
+                        id: node.id,
+                        type: node.type,
+                        name: node.data?.title || node.type,
+                        config: {
+                            position: node.position,
+                        },
+                        data: node.data,
+                    })),
+                    edges: edges.map((edge) => ({
+                        id: edge.id,
+                        destinyId: edge.source,
+                        originId: edge.target,
+                    })),
+                },
+            });
+
+            if (res.success) {
+                toast.success("Funil salvo com sucesso!");
+                return;
+            }
+
+            toast.error("Falha ao salvar o funil");
+        });
+    }
+
+    // Listeners para obter os eventos React Flow
+    // useEffect(() => {
+    //     setHistory((prevHistory) => {
+    //         return [
+    //             ...prevHistory,
+    //             {
+    //                 nodes,
+    //                 edges,
+    //             },
+    //         ];
+    //     });
+    // }, [nodes, edges]);
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
     return (
-        <div className="w-full h-full">
+        <div className="w-full h-full flex flex-col justify-center gap-2">
+            <div className="flex gap-8 justify-end items-center">
+                <div className="hidden gap-2 justify-center items-center">
+                    <Button
+                        size="icon"
+                        variant="outline"
+                        disabled={historyIndex === 0}
+                    >
+                        <GetIcon icon="IoIosUndo" />
+                    </Button>
+                    <Button
+                        size="icon"
+                        variant="outline"
+                        disabled={historyIndex >= history.length - 1}
+                    >
+                        <GetIcon icon="IoIosRedo" />
+                    </Button>
+                </div>
+                <Button
+                    size="icon"
+                    className="text-white bg-green-500"
+                    onClick={handleSaveFunnel}
+                >
+                    <GetIcon icon="FaSave" />
+                </Button>
+            </div>
             <div className="w-full h-full" ref={reactFlowWrapper}>
                 <ReactFlow
                     nodes={nodes}
@@ -189,7 +319,7 @@ export function FlowTab(props: Props) {
     return (
         <ReactFlowProvider>
             <DnDProvider>
-                <DnDFlow />
+                <DnDFlow {...props} />
             </DnDProvider>
         </ReactFlowProvider>
     );
