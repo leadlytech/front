@@ -25,9 +25,30 @@ export function DesignArea({
         number | undefined
     >();
     const [previewIndex, setPreviewIndex] = useState<number | null>(null);
+    const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+    const [dragEnabled, setDragEnabled] = useState(false);
+
     const ref = useRef<HTMLDivElement>(null);
 
-    const moveElementAtIndex = (index: number) => {};
+    const moveElementAtIndex = (fromIndex: number, toIndex: number) => {
+        setComponents((prevComponents) => {
+            if (
+                fromIndex < 0 ||
+                fromIndex >= prevComponents.length ||
+                toIndex < 0 ||
+                toIndex >= prevComponents.length ||
+                fromIndex === toIndex
+            ) {
+                return prevComponents;
+            }
+
+            const updatedComponents = [...prevComponents];
+            const [movedElement] = updatedComponents.splice(fromIndex, 1); // Remove o elemento do índice atual
+            updatedComponents.splice(toIndex, 0, movedElement); // Insere o elemento no novo índice
+
+            return updatedComponents;
+        });
+    };
 
     const removeElementAtIndex = (index: number) => {
         setComponents((prevComponents) => {
@@ -142,13 +163,34 @@ export function DesignArea({
                                 </div>
                             )}
                             <div
+                                draggable={dragEnabled}
+                                onDragStart={() => {
+                                    if (!dragEnabled) return;
+                                    setDraggedIndex(index);
+                                }}
+                                onDragOver={(e) => {
+                                    e.preventDefault();
+                                    setPreviewIndex(index);
+                                }}
+                                onDrop={() => {
+                                    if (draggedIndex !== null) {
+                                        moveElementAtIndex(draggedIndex, index);
+                                        setDraggedIndex(null);
+                                    }
+                                    setPreviewIndex(null);
+                                }}
+                                onDragEnd={() => {
+                                    setDraggedIndex(null);
+                                    setPreviewIndex(null);
+                                }}
+                                onDragLeave={() => setPreviewIndex(null)}
                                 onClick={() => onSelectComponent(index)}
                                 onMouseEnter={() => setElementHoverIndex(index)}
                                 onMouseLeave={() =>
                                     setElementHoverIndex(undefined)
                                 }
                                 className={cn(
-                                    "w-full max-w-sm border-2 border-transparent cursor-pointer",
+                                    "w-full max-w-sm border-2 border-transparent cursor-move",
                                     {
                                         "relative border-blue-500 rounded-md":
                                             isHovered,
@@ -162,8 +204,14 @@ export function DesignArea({
                                             size="icon"
                                             variant="ghost"
                                             className="w-8 h-8 cursor-move hover:bg-blue-700 rounded-none"
-                                            onClick={() =>
-                                                moveElementAtIndex(index)
+                                            onMouseDown={() =>
+                                                setDragEnabled(true)
+                                            }
+                                            onMouseUp={() =>
+                                                setDragEnabled(false)
+                                            }
+                                            onMouseLeave={() =>
+                                                setDragEnabled(false)
                                             }
                                         >
                                             <GetIcon icon="IoMoveSharp" />
