@@ -17,14 +17,11 @@ import {
 import "@xyflow/react/dist/style.css";
 import { toast } from "sonner";
 
-import {
-    defaultNodesData,
-    DefineNode,
-    ENodeType,
-    nodeTypes,
-    TEdge,
-} from "./nodes";
+import { defaultNodesData, nodeTypes } from "./nodes";
 import { makeApiRequest } from "@/actions";
+import { IFunnel } from "@/models";
+import { useNode } from "@/context";
+import { DefineNode, ENodeType, TEdge } from "@/interfaces";
 
 import Sidebar from "./sidebar";
 import { DnDProvider, useDnD } from "./DnDContext";
@@ -32,7 +29,6 @@ import { DnDProvider, useDnD } from "./DnDContext";
 import { GetIcon, Editor } from "@/components/custom";
 
 import { Button, SidebarProvider } from "@/components/ui";
-import { IFunnel } from "@/models";
 
 type Props = {
     params: {
@@ -117,11 +113,14 @@ function DnDFlow(props: Props) {
     const [edges, setEdges, onEdgesChange] = useEdgesState<TEdge>([]);
     const { screenToFlowPosition } = useReactFlow();
     const [type] = useDnD();
+    const { node: selectedNode, setNode: setSelectedNode } = useNode();
 
     const [historyIndex, setHistoryIndex] = useState<number>(0);
     const [history, setHistory] = useState<
         Array<{ nodes: any[]; edges: any[] }>
     >([]);
+
+    const [save, setSave] = useState<boolean>(false);
 
     const onConnect = useCallback(
         (params) =>
@@ -207,27 +206,31 @@ function DnDFlow(props: Props) {
 
     function handleSaveFunnel() {
         startTransition(async () => {
+            const data = {
+                steps: nodes.map((node) => ({
+                    id: node.id,
+                    type: node.type,
+                    name: node.data?.title || node.type,
+                    config: {
+                        position: node.position,
+                    },
+                    data: node.data,
+                })),
+                edges: edges.map((edge) => ({
+                    id: edge.id,
+                    destinyId: edge.source,
+                    originId: edge.target,
+                })),
+            };
+
+            console.log("dataToSave");
+            console.log(data);
             const res = await makeApiRequest("updateFunnel", {
                 params: {
                     organizationId: props.params.organizationId,
                     id: props.params.funnelId,
                 },
-                data: {
-                    steps: nodes.map((node) => ({
-                        id: node.id,
-                        type: node.type,
-                        name: node.data?.title || node.type,
-                        config: {
-                            position: node.position,
-                        },
-                        data: node.data,
-                    })),
-                    edges: edges.map((edge) => ({
-                        id: edge.id,
-                        destinyId: edge.source,
-                        originId: edge.target,
-                    })),
-                },
+                data,
             });
 
             if (res.success) {
@@ -256,10 +259,49 @@ function DnDFlow(props: Props) {
         fetchData();
     }, []);
 
+    function saveComponents(components: any[]) {
+        if (selectedNode) {
+            setNodes((prevNodes) =>
+                prevNodes.map((node) =>
+                    node.id === selectedNode.id
+                        ? {
+                              ...node,
+                              data: {
+                                  ...node.data,
+                                  components,
+                              },
+                          }
+                        : node
+                )
+            );
+            setSelectedNode(undefined);
+            setSave(true);
+        }
+    }
+
+    function discardComponentsChanges() {
+        if (selectedNode) {
+            setSelectedNode(undefined);
+        }
+    }
+
+    useEffect(() => {
+        if (save) {
+            handleSaveFunnel();
+            setSave(false);
+        }
+    }, [save]);
+
     return (
         <div className="w-full h-full flex flex-col justify-center gap-2">
             <div className="flex gap-8 justify-end items-center">
-                <Editor />
+                {selectedNode ? (
+                    <Editor
+                        currentComponents={selectedNode.data.components}
+                        saveComponents={saveComponents}
+                        discardComponentsChanges={discardComponentsChanges}
+                    />
+                ) : undefined}
                 <div className="hidden gap-2 justify-center items-center">
                     <Button
                         size="icon"

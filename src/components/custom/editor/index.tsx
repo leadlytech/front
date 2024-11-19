@@ -16,10 +16,21 @@ import {
     Input,
 } from "@/components/ui";
 
-export function Editor() {
-    const [isOpen, setIsOpen] = useState(true);
+type Props = {
+    currentComponents: ComponentItem[];
+    saveComponents: (components: ComponentItem[]) => void;
+    discardComponentsChanges: () => void;
+};
+
+export function Editor({
+    currentComponents,
+    saveComponents,
+    discardComponentsChanges,
+}: Props) {
+    // const [isOpen, setIsOpen] = useState(true);
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-    const [components, setComponents] = useState<ComponentItem[]>([]);
+    const [components, setComponents] =
+        useState<ComponentItem[]>(currentComponents);
 
     const handleSelectComponent = (index: number) => {
         setSelectedIndex(index);
@@ -44,8 +55,8 @@ export function Editor() {
     }, [components]);
 
     return (
-        <Dialog defaultOpen={true}>
-            <DialogTrigger>Open</DialogTrigger>
+        <Dialog open={true}>
+            {/* <DialogTrigger>Open</DialogTrigger> */}
             <DialogContent className="min-w-[95vw] h-[95vh] [&>button]:hidden">
                 <DialogTitle className="hidden">Editor de Página</DialogTitle>
                 <div className="flex flex-col gap-2">
@@ -55,12 +66,14 @@ export function Editor() {
                             <Button
                                 size="icon"
                                 className="text-white bg-green-500"
+                                onClick={() => saveComponents(components)}
                             >
                                 <GetIcon icon="FaSave" />
                             </Button>
                             <Button
                                 size="icon"
                                 className="text-white bg-red-500"
+                                onClick={() => discardComponentsChanges()}
                             >
                                 <GetIcon icon="IoClose" />
                             </Button>

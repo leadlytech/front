@@ -1,40 +1,15 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { ReactNode, useState } from "react";
-import { NodeProps, useReactFlow } from "@xyflow/react";
+import { useReactFlow } from "@xyflow/react";
+
+import { useNode } from "@/context";
+
+import { CustomNodeProps } from "@/interfaces";
 
 import { GetIcon } from "@/components/custom";
 
 import { Button } from "@/components/ui";
-
-export type TNodeTypes = "START" | "PAGE";
-
-export enum ENodeType {
-    START = "START",
-    PAGE = "PAGE",
-}
-
-export type DefineNode<T = any> = {
-    id: string;
-    type?: TNodeTypes;
-    draggable?: boolean;
-    position: {
-        x: number;
-        y: number;
-    };
-    data: T;
-};
-
-export type TEdge = {
-    id: string;
-    source: string;
-    target: string;
-};
-
-export type CustomNodeProps<T = any> = Omit<NodeProps, "data"> & {
-    data: T;
-};
 
 type Props = {
     node: CustomNodeProps;
@@ -45,6 +20,7 @@ type Props = {
 export const BaseNode = (props: Props) => {
     const flow = useReactFlow();
     const [isHovered, setIsHovered] = useState(false);
+    const { setNode } = useNode();
 
     function handleRemoveNode() {
         const nodeId = props.node.id;
@@ -87,6 +63,7 @@ export const BaseNode = (props: Props) => {
                     <Button
                         size="icon"
                         className="w-6 h-6 text-white bg-blue-400 hover:bg-blue-400"
+                        onClick={() => setNode(props.node)}
                     >
                         <GetIcon icon="MdEdit" />
                     </Button>

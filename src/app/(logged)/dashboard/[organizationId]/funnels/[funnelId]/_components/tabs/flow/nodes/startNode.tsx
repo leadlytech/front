@@ -3,7 +3,9 @@
 import { memo } from "react";
 import { Handle, Position } from "@xyflow/react";
 
-import { BaseNode, CustomNodeProps } from "./baseNode";
+import { CustomNodeProps } from "@/interfaces";
+
+import { BaseNode } from "./baseNode";
 
 type NodeData = object;
 

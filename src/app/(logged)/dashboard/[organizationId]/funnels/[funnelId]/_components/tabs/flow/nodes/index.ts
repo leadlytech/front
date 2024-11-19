@@ -6,7 +6,7 @@ import {
     TNodeTypes,
     ENodeType,
     TEdge,
-} from "./baseNode";
+} from "@/interfaces";
 
 import { PageNode, defaultNodeData as defaultPageData } from "./pageNode";
 import { StartNode, defaultNodeData as defaultStartData } from "./startNode";

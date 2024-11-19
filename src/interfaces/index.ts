@@ -1,3 +1,4 @@
-export * from "./context.interface"
-export * from "./user.interface"
-export * from "./editor.interface"
+export * from "./context.interface";
+export * from "./editor.interface";
+export * from "./node.interface";
+export * from "./user.interface";
