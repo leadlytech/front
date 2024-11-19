@@ -1,12 +1,14 @@
 "use client";
 
-import React, { useContext } from "react";
 import Link from "next/link";
+import { useContext } from "react";
 
 import { MainContext } from "@/context";
 import { IUserMember } from "@/interfaces";
 import { routes } from "@/routes";
 
+
+import { UserBar } from "@/components/custom";
 import {
     Avatar,
     AvatarFallback,
@@ -15,7 +17,6 @@ import {
     SidebarInset,
     SidebarTrigger,
 } from "@/components/ui";
-import { UserBar } from "@/components/custom";
 import { cn } from "@/lib/utils";
 
 export default function Page() {
@@ -28,6 +29,7 @@ export default function Page() {
                 <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
                     <div className="flex items-center gap-2 px-4">
                         <SidebarTrigger className="-ml-1" />
+                        
                     </div>
                 </header>
                 <div className="p-4 flex flex-col gap-4">
@@ -56,13 +58,15 @@ export default function Page() {
                                         break;
                                 }
                                 return (
+                                    
                                     <Link
                                         key={index}
                                         className="w-full px-4 p-2 flex justify-start items-center gap-8 uppercase bg-muted rounded-md"
                                         href={routes.dashboard.organization.overview(
                                             member.organization.id
                                         )}
-                                    >
+                                    >                        
+
                                         <div className="flex justify-start items-center gap-4">
                                             <Avatar className="h-8 w-8 bg-background rounded-lg">
                                                 <AvatarImage
@@ -78,6 +82,7 @@ export default function Page() {
                                                         .slice(0, 2)
                                                         .toUpperCase()}
                                                 </AvatarFallback>
+                                                
                                             </Avatar>
                                         </div>
                                         <div className="w-full max-w-40 flex flex-col gap-1">
@@ -131,6 +136,8 @@ export default function Page() {
                     </div>
                 </div>
             </SidebarInset>
+
         </>
+        
     );
 }
