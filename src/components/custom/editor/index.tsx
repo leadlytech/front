@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import { ComponentItem } from "@/interfaces";
 
 import { DesignArea, ComponentControl, EditorMenu } from "./parts";
@@ -10,6 +10,7 @@ import { GetIcon } from "@/components/custom";
 import {
     Dialog,
     DialogContent,
+    DialogTitle,
     DialogTrigger,
     Button,
     Input,
@@ -37,10 +38,16 @@ export function Editor() {
         }
     };
 
+    useEffect(() => {
+        console.log("components");
+        console.log(components);
+    }, [components]);
+
     return (
         <Dialog defaultOpen={true}>
             <DialogTrigger>Open</DialogTrigger>
             <DialogContent className="min-w-[95vw] h-[95vh] [&>button]:hidden">
+                <DialogTitle className="hidden">Editor de Página</DialogTitle>
                 <div className="flex flex-col gap-2">
                     <div className="flex justify-between items-center gap-2">
                         <Input defaultValue="Nome da página" />

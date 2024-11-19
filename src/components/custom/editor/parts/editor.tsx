@@ -1,12 +1,15 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
+import Image from "next/image";
 
 import { ComponentItem } from "@/interfaces";
 
 import { RenderComponent } from "./render";
 
 import { GetIcon } from "@/components/custom";
+import { Button } from "@/components/ui";
+import { cn } from "@/lib/utils";
 
 // Área de design onde os componentes são adicionados
 export function DesignArea({
@@ -18,8 +21,36 @@ export function DesignArea({
     components: ComponentItem[];
     setComponents: React.Dispatch<React.SetStateAction<ComponentItem[]>>;
 }) {
+    const [elementHoverIndex, setElementHoverIndex] = useState<
+        number | undefined
+    >();
     const [previewIndex, setPreviewIndex] = useState<number | null>(null);
     const ref = useRef<HTMLDivElement>(null);
+
+    const moveElementAtIndex = (index: number) => {};
+
+    const removeElementAtIndex = (index: number) => {
+        setComponents((prevComponents) => {
+            if (index < 0 || index >= prevComponents.length) {
+                return prevComponents;
+            }
+
+            return prevComponents.filter((_, i) => i !== index);
+        });
+    };
+
+    const duplicateElementAtIndex = (index: number) => {
+        setComponents((prevComponents) => {
+            if (index < 0 || index >= prevComponents.length) {
+                return prevComponents;
+            }
+
+            const newComponents = [...prevComponents];
+            newComponents.splice(index + 1, 0, prevComponents[index]);
+
+            return newComponents;
+        });
+    };
 
     useEffect(() => {
         const designArea = ref.current;
@@ -83,25 +114,96 @@ export function DesignArea({
 
     return (
         <div ref={ref} className="h-full p-4 border rounded-md overflow-auto">
-            <div className="flex flex-col items-center space-y-4">
-                {components.map((component, index) => (
-                    <React.Fragment key={index}>
-                        {previewIndex === index && (
-                            <div className="w-full max-w-sm p-4 text-muted-foreground bg-transparent border rounded transition">
-                                <div className="flex justify-center items-center gap-2 animate-bounce">
-                                    <GetIcon icon="IoIosArrowDropdown" />
-                                    Solte aqui
+            <div className="h-full flex flex-col items-center space-y-4">
+                {components.length === 0 &&
+                previewIndex !== components.length ? (
+                    <div className="h-full flex flex-col justify-center items-center gap-4">
+                        <Image
+                            src="/assets/svgs/drag.svg"
+                            alt="drag"
+                            width={200}
+                            height={200}
+                        />
+                        <h1 className="text-muted-foreground">
+                            Arraste os componentes para cá!
+                        </h1>
+                    </div>
+                ) : undefined}
+                {components.map((component: ComponentItem, index) => {
+                    const isHovered = index === elementHoverIndex;
+                    return (
+                        <React.Fragment key={index}>
+                            {previewIndex === index && (
+                                <div className="w-full max-w-sm p-4 text-muted-foreground bg-transparent border rounded transition">
+                                    <div className="flex justify-center items-center gap-2 animate-bounce">
+                                        <GetIcon icon="IoIosArrowDropdown" />
+                                        Solte aqui
+                                    </div>
                                 </div>
+                            )}
+                            <div
+                                onClick={() => onSelectComponent(index)}
+                                onMouseEnter={() => setElementHoverIndex(index)}
+                                onMouseLeave={() =>
+                                    setElementHoverIndex(undefined)
+                                }
+                                className={cn(
+                                    "w-full max-w-sm border-2 border-transparent cursor-pointer",
+                                    {
+                                        "relative border-blue-500 rounded-md":
+                                            isHovered,
+                                    }
+                                )}
+                            >
+                                <RenderComponent component={component} />
+                                {isHovered ? (
+                                    <div className="absolute top-1 left-1 z-50 flex gap-0 justify-start text-sm text-white bg-blue-400 shadow-lg rounded-md overflow-hidden">
+                                        <Button
+                                            size="icon"
+                                            variant="ghost"
+                                            className="w-8 h-8 cursor-move hover:bg-blue-700 rounded-none"
+                                            onClick={() =>
+                                                moveElementAtIndex(index)
+                                            }
+                                        >
+                                            <GetIcon icon="IoMoveSharp" />
+                                        </Button>
+                                        <Button
+                                            size="icon"
+                                            variant="ghost"
+                                            className="w-8 h-8 cursor-pointer hover:bg-blue-700 rounded-none"
+                                            onClick={() =>
+                                                onSelectComponent(index)
+                                            }
+                                        >
+                                            <GetIcon icon="MdEdit" />
+                                        </Button>
+                                        <Button
+                                            size="icon"
+                                            variant="ghost"
+                                            className="w-8 h-8 cursor-pointer hover:bg-blue-700 rounded-none"
+                                            onClick={() =>
+                                                duplicateElementAtIndex(index)
+                                            }
+                                        >
+                                            <GetIcon icon="FaClone" />
+                                        </Button>
+                                        <Button
+                                            size="icon"
+                                            variant="ghost"
+                                            className="w-8 h-8 cursor-pointer hover:bg-blue-700 rounded-none"
+                                            onClick={() =>
+                                                removeElementAtIndex(index)
+                                            }
+                                        >
+                                            <GetIcon icon="FaTrash" />
+                                        </Button>
+                                    </div>
+                                ) : undefined}
                             </div>
-                        )}
-                        <div
-                            className="w-full max-w-sm"
-                            onClick={() => onSelectComponent(index)}
-                        >
-                            <RenderComponent component={component} />
-                        </div>
-                    </React.Fragment>
-                ))}
+                        </React.Fragment>
+                    );
+                })}
                 {previewIndex === components.length && (
                     <div className="w-full max-w-sm p-4 text-muted-foreground bg-transparent border rounded transition">
                         <div className="flex justify-center items-center gap-2 animate-bounce">

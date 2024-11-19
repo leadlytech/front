@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 import { RenderOptions } from "./render";
 import { ComponentItem } from "@/interfaces";
 
@@ -15,8 +17,16 @@ export function ComponentControl({
             {component ? (
                 <RenderOptions component={component} onEdit={onEdit} />
             ) : (
-                <div className="w-full h-full flex justify-center items-center">
-                    <h1>Selecione um componente</h1>
+                <div className="w-full h-full flex flex-col justify-center items-center gap-4">
+                    <Image
+                        src="/assets/svgs/settings.svg"
+                        alt="drag"
+                        width={200}
+                        height={200}
+                    />
+                    <h1 className="text-muted-foreground">
+                        Selecione um componente
+                    </h1>
                 </div>
             )}
         </div>
