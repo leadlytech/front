@@ -34,14 +34,7 @@ export function Options({ component, onEdit }: Props) {
 
   return (
     <div style={{ maxWidth: "200px", margin: "0 auto" }}>
-      <label className="block mb-2 text-gray-700">Largura do espaço (px)</label>
-      <input
-        type="number"
-        value={parseInt(component.style?.width || "100", 10)}
-        onChange={handleWidthChange}
-        className="mb-4 p-2 border border-gray-300 rounded w-full"
-      />
-      <label className="block mb-2 text-gray-700">Altura do espaço (px)</label>
+      <label className="block mb-2 text-gray-700">Tamanho do espaço (px)</label>
       <input
         type="number"
         value={parseInt(component.style?.height || "100", 10)}

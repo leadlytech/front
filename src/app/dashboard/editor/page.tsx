@@ -19,9 +19,6 @@ export default function Page() {
   };
 
   const handleEditComponent = (updates: Partial<ComponentItem>) => {
-    console.log("selectedIndex");
-    console.log(selectedIndex);
-    console.log(updates);
     if (selectedIndex !== null) {
       setComponents((prev) => {
         const updatedComponents = [...prev];
@@ -38,7 +35,7 @@ export default function Page() {
     <div className="flex h-screen w-screen overflow-hidden relative">
       {/* Sidebar */}
       <div
-        className={`absolute top-0 left-0 h-full bg-gray-700 text-white transition-transform duration-300 z-20 ${
+        className={`absolute top-0 left-0 h-full bg-[#18181B] text-white transition-transform duration-300 z-20 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
         style={{ width: "250px" }}
@@ -47,18 +44,6 @@ export default function Page() {
           <h1 className="text-xl font-bold mb-4">Sidebar</h1>
           <EditorMenu />
         </div>
-      </div>
-
-      {/* Lista de Componentes - Quadrado Azul */}
-      <div className="flex-none w-[120px] bg-blue-500 p-4 space-y-2">
-        {/* Botões dos Componentes */}
-        <button className="w-full p-2 bg-gray-200 text-gray-700 rounded-lg border border-gray-500 mb-2 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400">
-          Botão
-        </button>
-        <button className="w-full p-2 bg-gray-200 text-gray-700 rounded-lg border border-gray-500 mb-2 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400">
-          Texto
-        </button>
-        {/* Adicione mais botões conforme necessário */}
       </div>
 
       {/* Botão para abrir/fechar a Sidebar */}
@@ -84,31 +69,42 @@ export default function Page() {
       >
         <GetIcon
           icon="FaArrowRight"
-          className={`
-            w-8 h-8
-            transition-transform
-            duration-300
-            ${isOpen ? "rotate-180" : "rotate-0"}
-          `}
+          className={`w-8 h-8 transition-transform duration-300 ${
+            isOpen ? "rotate-180" : "rotate-0"
+          }`}
         />
       </button>
 
-      {/* Quadrado Verde Esquerdo */}
-      <div className="flex-none w-1/5 bg-gray-500"></div>
+      {/* Área principal */}
+      <div className="flex flex-col flex-grow bg-[#0A0A0A]">
+        {/* Header */}
+        <div className="flex items-center justify-between bg-white px-6 py-4 border-b border-gray-300">
+          <h1 className="text-lg font-semibold" />
+          <div className="flex space-x-4">
+            {/* Botões de Salvar e Publicar */}
+            <button className="border bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300">
+              Salvar
+            </button>
+            <button className="bg-black text-white px-4 py-2 rounded hover:bg-gray-700">
+              Publicar
+            </button>
+          </div>
+        </div>
 
-      {/* Quadrado Vermelho Central */}
-      <div className="flex-grow bg-gray-500 flex items-center justify-center">
-        <div className="w-3/4 h-3/4">
-          <DesignArea
-            onSelectComponent={handleSelectComponent}
-            components={components}
-            setComponents={setComponents}
-          />
+        {/* Design Area */}
+        <div className="flex-grow flex items-center justify-center">
+          <div className="w-2/4 h-3/4">
+            <DesignArea
+              onSelectComponent={handleSelectComponent}
+              components={components}
+              setComponents={setComponents}
+            />
+          </div>
         </div>
       </div>
 
-      {/* Quadrado Cinza Claro Direito - Painel de Edição */}
-      <div className="flex-none w-1/5 bg-gray-500 p-4">
+      {/* Painel de Edição */}
+      <div className="flex-none w-1/5 bg-[#18181B] p-4">
         <ComponentControl
           component={selectedIndex !== null ? components[selectedIndex] : null}
           onEdit={handleEditComponent}

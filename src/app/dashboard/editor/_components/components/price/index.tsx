@@ -1,8 +1,13 @@
 import { ComponentItem } from "@/interfaces";
+import { Component } from "./component";
+import { Options } from "./options";
+import { componentDefault } from "./dto";
 
 type Props = {
   component: ComponentItem;
 };
+
+export { Options as PriceOptions, componentDefault as PriceDefault };
 
 export function PriceComponent({ component }: Props) {
   return (

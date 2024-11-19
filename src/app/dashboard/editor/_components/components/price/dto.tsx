@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { ComponentItem } from "@/interfaces";
+import { Options } from "./options";
 
 export const valueSchema = z.object({
   content: z.string().optional(),
@@ -24,3 +25,4 @@ export const componentDefault: TComponent = {
     content: "Meu texto",
   },
 };
+

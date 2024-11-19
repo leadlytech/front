@@ -27,10 +27,7 @@ function DraggableButton({ component }: Props) {
 
     const handleDragStart = (e: DragEvent) => {
       if (e.dataTransfer) {
-        e.dataTransfer.setData(
-          "application/json",
-          JSON.stringify(component)
-        );
+        e.dataTransfer.setData("application/json", JSON.stringify(component));
         e.dataTransfer.effectAllowed = "move";
       }
       button?.classList.add("opacity-50");
@@ -61,7 +58,9 @@ function DraggableButton({ component }: Props) {
 }
 
 function DesignArea() {
-  const [droppedComponents, setDroppedComponents] = useState<ComponentItem[]>([]);
+  const [droppedComponents, setDroppedComponents] = useState<ComponentItem[]>(
+    []
+  );
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>, index: number) => {
     e.preventDefault();
@@ -76,7 +75,7 @@ function DesignArea() {
   };
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault(); 
+    e.preventDefault();
   };
 
   return (
@@ -118,7 +117,7 @@ function DesignArea() {
 export function EditorMenu() {
   return (
     <div
-      className="absolute top-0 left-[250px] h-full bg-gray-500 z-15 transition-transform duration-300 translate-x-0"
+      className="absolute top-0 left-[250px] h-full bg-[#0A0A0A] z-15 transition-transform duration-300 translate-x-0"
       style={{ width: "120px" }}
     >
       <div className="space-y-2 p-4">

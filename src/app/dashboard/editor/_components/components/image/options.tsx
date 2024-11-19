@@ -67,7 +67,7 @@ export function Options({ component, onEdit }: Props) {
         id="borderRadius"
         type="range"
         min="0"
-        max="50"
+        max="150"
         defaultValue={parseInt(component.style?.borderRadius) || 0}
         onChange={handleBorderRadiusChange}
         className="w-full"

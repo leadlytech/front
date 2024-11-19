@@ -1,11 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ComponentItem } from "@/interfaces";
-import { 
+import {
   ButtonComponent,
   ImageComponent,
   ImageOptions,
   PriceComponent,
+  PriceOptions,
   SpaceComponent,
+  SpaceOptions,
   TextComponent,
   TextOptions,
   VideoComponent,
@@ -45,6 +47,10 @@ export function RenderOptions({ component, onEdit }: OptionProps) {
       return <TextOptions component={component} onEdit={onEdit} />;
     case "image":
       return <ImageOptions component={component} onEdit={onEdit} />;
+    case "price":
+      return <PriceOptions component={component} onEdit={onEdit} />;
+    case "space":
+      return <SpaceOptions component={component} onEdit={onEdit} />;
     default:
       return undefined;
   }
