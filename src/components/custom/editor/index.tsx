@@ -87,6 +87,7 @@ export function Editor({
                                     onSelectComponent={handleSelectComponent}
                                     components={components}
                                     setComponents={setComponents}
+                                    liveMode={false}
                                 />
                             </div>
                         </div>

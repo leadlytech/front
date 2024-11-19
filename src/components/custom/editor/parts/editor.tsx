@@ -16,10 +16,12 @@ export function DesignArea({
     onSelectComponent,
     components,
     setComponents,
+    liveMode,
 }: {
     onSelectComponent: (index: number) => void;
     components: ComponentItem[];
     setComponents: React.Dispatch<React.SetStateAction<ComponentItem[]>>;
+    liveMode: boolean;
 }) {
     const [elementHoverIndex, setElementHoverIndex] = useState<
         number | undefined

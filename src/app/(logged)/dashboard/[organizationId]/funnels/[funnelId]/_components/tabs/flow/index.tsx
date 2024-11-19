@@ -206,31 +206,27 @@ function DnDFlow(props: Props) {
 
     function handleSaveFunnel() {
         startTransition(async () => {
-            const data = {
-                steps: nodes.map((node) => ({
-                    id: node.id,
-                    type: node.type,
-                    name: node.data?.title || node.type,
-                    config: {
-                        position: node.position,
-                    },
-                    data: node.data,
-                })),
-                edges: edges.map((edge) => ({
-                    id: edge.id,
-                    destinyId: edge.source,
-                    originId: edge.target,
-                })),
-            };
-
-            console.log("dataToSave");
-            console.log(data);
             const res = await makeApiRequest("updateFunnel", {
                 params: {
                     organizationId: props.params.organizationId,
                     id: props.params.funnelId,
                 },
-                data,
+                data: {
+                    steps: nodes.map((node) => ({
+                        id: node.id,
+                        type: node.type,
+                        name: node.data?.title || node.type,
+                        config: {
+                            position: node.position,
+                        },
+                        data: node.data,
+                    })),
+                    edges: edges.map((edge) => ({
+                        id: edge.id,
+                        destinyId: edge.source,
+                        originId: edge.target,
+                    })),
+                },
             });
 
             if (res.success) {

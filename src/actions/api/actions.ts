@@ -82,6 +82,11 @@ export const apiActions = {
         path: "/v1/organizations/{organizationId}/funnels/{id}",
         method: EHttpMethods.GET,
     },
+    getFunnelLive: {
+        path: "/v1/funnels/{id}",
+        method: EHttpMethods.GET,
+        dispenseToken: true,
+    },
     updateFunnel: {
         path: "/v1/organizations/{organizationId}/funnels/{id}",
         method: EHttpMethods.PATCH,
