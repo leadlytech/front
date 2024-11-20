@@ -40,7 +40,6 @@ import {
     Input,
 } from "@/components/ui";
 
-
 type Props = {
     params: { organizationId: string };
 };
@@ -149,6 +148,7 @@ export default function Page({ params }: Props) {
 
     useEffect(() => {
         fetchData();
+        /* eslint-disable-next-line react-hooks/exhaustive-deps */
     }, [currentPage]);
 
     return (

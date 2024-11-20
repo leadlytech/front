@@ -11,7 +11,6 @@ import {
     Dialog,
     DialogContent,
     DialogTitle,
-    DialogTrigger,
     Button,
     Input,
 } from "@/components/ui";
@@ -27,7 +26,6 @@ export function Editor({
     saveComponents,
     discardComponentsChanges,
 }: Props) {
-    // const [isOpen, setIsOpen] = useState(true);
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
     const [components, setComponents] =
         useState<ComponentItem[]>(currentComponents);
@@ -49,14 +47,8 @@ export function Editor({
         }
     };
 
-    useEffect(() => {
-        console.log("components");
-        console.log(components);
-    }, [components]);
-
     return (
         <Dialog open={true}>
-            {/* <DialogTrigger>Open</DialogTrigger> */}
             <DialogContent className="min-w-[95vw] h-[95vh] [&>button]:hidden">
                 <DialogTitle className="hidden">Editor de Página</DialogTitle>
                 <div className="flex flex-col gap-2">

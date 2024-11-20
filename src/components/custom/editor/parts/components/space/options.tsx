@@ -8,18 +8,6 @@ type Props = {
 };
 
 export function Options({ component, onEdit }: Props) {
-    const handleWidthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const newWidth = `${parseInt(e.target.value, 10)}px`;
-        if (component.style?.width !== newWidth) {
-            onEdit({
-                style: {
-                    ...component.style,
-                    width: newWidth,
-                },
-            });
-        }
-    };
-
     const handleHeightChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newHeight = `${parseInt(e.target.value, 10)}px`;
         if (component.style?.height !== newHeight) {

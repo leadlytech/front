@@ -1,10 +1,10 @@
 import { TComponent } from "./dto";
 
-type Props = {
-    component: TComponent;
-};
+// type Props = {
+//     component: TComponent;
+// };
 
-export function Component({ component }: Props) {
+export function Component(/* { component }: Props */) {
     return (
         <div className="flex items-center border border-gray-300 rounded-lg p-4">
             <div className="flex-grow"></div>

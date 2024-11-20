@@ -17,15 +17,6 @@ export function Options({ component, onEdit }: Props) {
     });
   };
 
-  const handleColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onEdit({
-      style: {
-        ...component.style,
-        bgColor: e.target.value,
-      },
-    });
-  };
-
   return (
     <div className="w-full p-2 bg-gray-100 text-gray-700 rounded-lg border border-gray-300 mb-2">
       <label className="block mb-2 text-gray-700" htmlFor="url">

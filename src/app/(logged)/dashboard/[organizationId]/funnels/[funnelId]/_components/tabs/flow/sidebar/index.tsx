@@ -45,7 +45,7 @@ const availableNodes: INode[] = [
 ];
 
 export default function SidebarComponent() {
-    const [_, setType] = useDnD();
+    const { setType } = useDnD();
     const { toggleSidebar, open } = useSidebar();
 
     const onDragStart = (
@@ -65,9 +65,6 @@ export default function SidebarComponent() {
                 variant="outline"
                 onClick={toggleSidebar}
                 className="absolute -top-2 -right-2 z-50"
-                // className={cn("transition-all", {
-                //     hidden: open,
-                // })}
             >
                 <GetIcon icon="FaPlus" />
             </Button>
