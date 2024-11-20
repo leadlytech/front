@@ -11,6 +11,8 @@ type NodeData = object;
 
 export const defaultNodeData: NodeData = {};
 
+export const nodeTypeKey = "START";
+
 export const StartNode = memo((props: CustomNodeProps<NodeData>) => {
     return (
         <BaseNode hideOptions={true} node={props}>
@@ -27,3 +29,5 @@ export const StartNode = memo((props: CustomNodeProps<NodeData>) => {
         </BaseNode>
     );
 });
+
+StartNode.displayName = nodeTypeKey;

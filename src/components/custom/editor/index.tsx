@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ComponentItem } from "@/interfaces";
 
 import { DesignArea, ComponentControl, EditorMenu } from "./parts";

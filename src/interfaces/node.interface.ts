@@ -24,6 +24,7 @@ export type TEdge = {
     id: string;
     source: string;
     target: string;
+    animated?: boolean;
 };
 
 export type CustomNodeProps<T = any> = Omit<NodeProps, "data"> & {

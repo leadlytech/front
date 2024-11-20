@@ -8,8 +8,16 @@ import {
     TEdge,
 } from "@/interfaces";
 
-import { PageNode, defaultNodeData as defaultPageData } from "./pageNode";
-import { StartNode, defaultNodeData as defaultStartData } from "./startNode";
+import {
+    PageNode,
+    defaultNodeData as defaultPageData,
+    nodeTypeKey as pageTypeKey,
+} from "./pageNode";
+import {
+    StartNode,
+    defaultNodeData as defaultStartData,
+    nodeTypeKey as startTypeKey,
+} from "./startNode";
 
 export const nodeTypes: Record<
     TNodeTypes,
@@ -23,6 +31,6 @@ export { ENodeType };
 export type { DefineNode, CustomNodeProps, TNodeTypes, TEdge };
 
 export const defaultNodesData = {
-    PAGE: { ...defaultPageData },
-    START: { ...defaultStartData },
+    [startTypeKey]: { ...defaultStartData },
+    [pageTypeKey]: { ...defaultPageData },
 };

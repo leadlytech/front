@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable-next-line @typescript-eslint/no-unused-vars */
 
 import { createContext, ReactNode, useContext, useState } from "react";
 
 const DnDContext = createContext({
     type: null,
-    setType: (_: any) => {},
+    setType: (v: any) => v,
 });
 
 export const DnDProvider = ({ children }: { children: ReactNode }) => {

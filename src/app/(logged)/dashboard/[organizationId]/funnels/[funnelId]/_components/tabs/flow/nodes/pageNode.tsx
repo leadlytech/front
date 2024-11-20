@@ -11,7 +11,7 @@ import { GetIcon } from "@/components/custom";
 
 export type NodeData = {
     name: string;
-    components?: any;
+    components?: unknown;
     navigations?: Record<
         string,
         {
@@ -27,6 +27,8 @@ export const defaultNodeData: NodeData = {
     components: [],
     navigations: {},
 };
+
+export const nodeTypeKey = "PAGE";
 
 export const PageNode = memo((props: CustomNodeProps<NodeData>) => {
     const data = props.data;
@@ -76,3 +78,5 @@ export const PageNode = memo((props: CustomNodeProps<NodeData>) => {
         </BaseNode>
     );
 });
+
+PageNode.displayName = nodeTypeKey;
