@@ -1,5 +1,5 @@
 import { ContextProviders } from "../context";
-import { ThemeProvider } from "./theme-provider";
+import { ThemeProvider } from "./themeProvider";
 
 import { SidebarProvider } from "@/components/ui";
 

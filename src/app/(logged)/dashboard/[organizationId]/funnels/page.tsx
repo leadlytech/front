@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import Link from "next/link";
 import { z } from "zod";
 
+import { useBreadcrumbStore } from "@/store";
 import { apiActions, makeApiRequest } from "@/actions";
 import { IFunnel, IListOffset } from "@/models";
 import { usePagination } from "@/hooks";
@@ -45,6 +46,9 @@ type Props = {
 };
 
 export default function Page({ params }: Props) {
+    const setBreadcrumbs = useBreadcrumbStore((state) => state.setBreadcrumbs);
+    setBreadcrumbs(["FUNIS", "LISTAGEM"]);
+
     const [data, setData] = useState<Array<IFunnel> | undefined>(undefined);
     const [currentPage, setCurrentPage] = useState<number>(0);
     const [isLastPage, setIsLastPage] = useState<boolean>(true);

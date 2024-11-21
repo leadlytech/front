@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useState } from "react";
+import { useState } from "react";
 import {
     BadgeCheck,
     Bell,
@@ -9,7 +9,7 @@ import {
     LogOut,
 } from "lucide-react";
 
-import { MainContext } from "@/context";
+import { useUserStore } from "@/store";
 
 import {
     Avatar,
@@ -30,7 +30,7 @@ import {
 
 export function NavUser() {
     const { isMobile } = useSidebar();
-    const { user } = useContext(MainContext);
+    const user = useUserStore((state) => state.user);
     const [name] = useState(`${user?.firstName} ${user?.lastName}`.trim());
 
     return (

@@ -1,12 +1,12 @@
 "use client";
 
-import { Fragment, useContext, useTransition } from "react";
+import { Fragment, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { toast } from "sonner";
 
-import { MainContext } from "@/context";
+import { useUserStore } from "@/store";
 import { apiActions, makeApiRequest } from "@/actions";
 
 import { UserBar } from "@/components/custom";
@@ -29,7 +29,7 @@ import {
 
 export default function Page() {
     const [isPending, startTransition] = useTransition();
-    const { user } = useContext(MainContext);
+    const user = useUserStore((state) => state.user);
 
     const action = apiActions.updateMePass;
     type TSchema = z.infer<typeof action.schema>;

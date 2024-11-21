@@ -1,10 +1,13 @@
 "use client";
 
-import { useContext, ComponentProps } from "react";
+import { ComponentProps } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
-import { MainContext } from "@/context";
+import { routes } from "@/routes";
+import { useUserStore } from "@/store";
+
+import { GetIcon } from "@/components/custom";
 
 import {
     ScrollArea,
@@ -20,10 +23,6 @@ import {
     SidebarMenuButton,
 } from "@/components/ui";
 
-import { GetIcon } from "@/components/custom";
-import { routes } from "@/routes";
-
-// This is sample data.
 const options = [
     {
         title: "Conta",
@@ -43,7 +42,7 @@ const options = [
 ];
 
 export function UserBar({ ...props }: ComponentProps<typeof Sidebar>) {
-    const { user } = useContext(MainContext);
+    const { user } = useUserStore();
 
     return (
         <Sidebar collapsible="icon" {...props}>

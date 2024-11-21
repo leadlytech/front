@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 
+import { useUserStore } from "@/store";
+import { routes } from "@/routes";
+
 import { NavUser } from "./navUser";
 import { OrganizationSwitcher } from "./orgSwitcher";
-import { useMain } from "@/context";
-import { routes } from "@/routes";
 
 import { GetIcon } from "@/components/custom";
 
@@ -25,7 +26,7 @@ import {
 } from "@/components/ui";
 
 export function DashBar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-    const { currentOrg } = useMain();
+    const { activeOrg } = useUserStore();
 
     const nav = (organizationId: string) => [
         {
@@ -129,7 +130,7 @@ export function DashBar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             </SidebarHeader>
             <SidebarContent>
                 <ScrollArea>
-                    {nav(currentOrg?.organization.id || "").map((item) => (
+                    {nav(activeOrg?.organization.id || "").map((item) => (
                         <SidebarGroup key={item.title}>
                             <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
                             <SidebarGroupContent>

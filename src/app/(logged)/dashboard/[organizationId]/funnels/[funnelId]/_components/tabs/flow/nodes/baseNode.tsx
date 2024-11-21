@@ -3,7 +3,7 @@
 import { ReactNode, useState } from "react";
 import { useReactFlow } from "@xyflow/react";
 
-import { useNode } from "@/context";
+import { useNodeStore } from "@/store";
 
 import { CustomNodeProps } from "@/interfaces";
 
@@ -20,7 +20,7 @@ type Props = {
 export const BaseNode = (props: Props) => {
     const flow = useReactFlow();
     const [isHovered, setIsHovered] = useState(false);
-    const { setNode } = useNode();
+    const { setNode } = useNodeStore();
 
     function handleRemoveNode() {
         const nodeId = props.node.id;

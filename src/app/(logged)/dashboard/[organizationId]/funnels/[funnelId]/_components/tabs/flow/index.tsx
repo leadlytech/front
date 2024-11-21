@@ -20,7 +20,7 @@ import { toast } from "sonner";
 import { defaultNodesData, nodeTypes } from "./nodes";
 import { makeApiRequest } from "@/actions";
 import { IFunnel } from "@/models";
-import { useNode } from "@/context";
+import { useNodeStore } from "@/store";
 import { DefineNode, ENodeType, TEdge } from "@/interfaces";
 
 import Sidebar from "./sidebar";
@@ -112,7 +112,7 @@ function DnDFlow(props: Props) {
     const [edges, setEdges, onEdgesChange] = useEdgesState<TEdge>([]);
     const { screenToFlowPosition } = useReactFlow();
     const { type } = useDnD();
-    const { node: selectedNode, setNode: setSelectedNode } = useNode();
+    const { node: selectedNode, setNode: setSelectedNode } = useNodeStore();
 
     const [save, setSave] = useState<boolean>(false);
 

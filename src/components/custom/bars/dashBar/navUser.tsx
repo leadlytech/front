@@ -11,7 +11,7 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import { useMain } from "@/context";
+import { useUserStore } from "@/store";
 import { routes } from "@/routes";
 import { removeCookie } from "@/actions";
 
@@ -33,7 +33,7 @@ import {
 } from "@/components/ui";
 
 export function NavUser() {
-    const { user } = useMain();
+    const { user } = useUserStore();
     const router = useRouter();
     const { isMobile } = useSidebar();
 

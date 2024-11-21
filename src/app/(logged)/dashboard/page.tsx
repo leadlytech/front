@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import Link from "next/link";
 import { redirect, RedirectType } from "next/navigation";
 
-import { useMain } from "@/context";
+import { useUserStore } from "@/store";
 import { IUserMember } from "@/interfaces";
 import { routes } from "@/routes";
 import { cn } from "@/lib/utils";
@@ -21,7 +21,7 @@ import {
 } from "@/components/ui";
 
 export default function Page() {
-    const { user } = useMain();
+    const { user } = useUserStore();
 
     useEffect(() => {
         if (user?.members.length === 1) {

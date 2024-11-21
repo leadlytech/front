@@ -1,6 +1,8 @@
 "use client";
 
-import { ChevronsUpDown, Plus } from "lucide-react";
+import { ChevronsUpDown, Plus, GalleryVerticalEnd } from "lucide-react";
+
+import { useUserStore } from "@/store";
 
 import {
     DropdownMenu,
@@ -9,20 +11,15 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
     useSidebar,
-} from "@/components/ui/sidebar";
-
-import { GalleryVerticalEnd } from "lucide-react";
-import { useMain } from "@/context";
+} from "@/components/ui";
 
 export function OrganizationSwitcher() {
     const { isMobile } = useSidebar();
-    const { myOrgs, currentOrg, setCurrentOrg } = useMain();
+    const { userOrgs, activeOrg, setActiveOrg } = useUserStore();
 
     return (
         <SidebarMenu>
@@ -38,10 +35,10 @@ export function OrganizationSwitcher() {
                             </div>
                             <div className="grid flex-1 text-left text-sm leading-tight">
                                 <span className="truncate font-semibold">
-                                    {currentOrg?.organization.name}
+                                    {activeOrg?.organization.name}
                                 </span>
                                 <span className="truncate text-xs">
-                                    {currentOrg?.owner
+                                    {activeOrg?.owner
                                         ? "Proprietário"
                                         : "Membro"}
                                 </span>
@@ -58,10 +55,10 @@ export function OrganizationSwitcher() {
                         <DropdownMenuLabel className="text-xs text-muted-foreground">
                             Organizações
                         </DropdownMenuLabel>
-                        {myOrgs?.map((org, index: number) => (
+                        {userOrgs?.map((org, index: number) => (
                             <DropdownMenuItem
                                 key={index}
-                                onClick={() => setCurrentOrg(org)}
+                                onClick={() => setActiveOrg(org.id)}
                                 className="gap-2 p-2 cursor-pointer"
                             >
                                 {org.organization.name}
