@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useTransition } from "react";
+import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -52,7 +52,7 @@ export default function Page() {
     }
 
     return (
-        <Fragment>
+        <>
             <UserBar />
             <SidebarInset>
                 <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
@@ -159,6 +159,6 @@ export default function Page() {
                     </div>
                 </div>
             </SidebarInset>
-        </Fragment>
+        </>
     );
 }

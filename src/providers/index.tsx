@@ -1,7 +1,6 @@
 import { ContextProviders } from "../context";
 import { ThemeProvider } from "./themeProvider";
-
-import { SidebarProvider } from "@/components/ui";
+import { SidebarProvider } from "./sidebarProvider";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
     return (
@@ -19,3 +18,5 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         </ContextProviders>
     );
 }
+
+export { SidebarProvider };

@@ -1,9 +1,8 @@
 "use client";
 
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
-
 import { TComponent } from "./dto";
+
+import { Quill } from "@/components/custom";
 
 type Props = {
     component: TComponent;
@@ -36,7 +35,7 @@ export function Options({ component, onEdit }: Props) {
             <label className="block mb-2 text-gray-700">
                 Conteúdo do Texto
             </label>
-            <ReactQuill
+            <Quill
                 theme="snow"
                 value={component.value?.content}
                 onChange={handleTextChange}

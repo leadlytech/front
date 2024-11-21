@@ -4,5 +4,6 @@ export * from "./editor";
 export * from "./icons";
 export * from "./initializer";
 export * from "./loading";
+export * from "./quill";
 export * from "./tables";
 export * from "./theme";
