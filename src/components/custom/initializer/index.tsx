@@ -5,6 +5,8 @@ import { ReactNode } from "react";
 import { IUser } from "@/interfaces";
 import { useUserStore } from "@/store";
 
+import { PageLoading } from "@/components/custom";
+
 export function Initializer({
     children,
     user,
@@ -16,6 +18,8 @@ export function Initializer({
 
     if (!currentUserData) {
         setUser(user);
+
+        return <PageLoading />;
     }
 
     return children;

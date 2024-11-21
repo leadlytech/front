@@ -1,3 +1,5 @@
+"use client";
+
 import { useBreadcrumbStore } from "@/store";
 
 export default function Page() {

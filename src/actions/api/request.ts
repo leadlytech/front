@@ -114,16 +114,16 @@ export async function makeApiRequest<T = any>(
                 message = "ok";
                 break;
             case 401:
-                message = "errors.unauthorizedError";
+                message = "Não autorizado";
                 break;
             case 500:
-                message = "errors.internalServerError";
+                message = "Erro interno";
                 break;
         }
 
         return {
             success: res.ok,
-            statusCode: res.status,
+            statusCode: json?.message || res.status,
             message,
             payload: json,
         };

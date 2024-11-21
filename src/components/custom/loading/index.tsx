@@ -7,10 +7,10 @@ export function Loading() {
     return (
         <div className="flex flex-col justify-center items-center gap-4">
             <Image
-                src="/assets/svgs/logo.svg"
+                src="/assets/svg/logo/logo.svg"
                 alt="logo"
-                width={120}
-                height={120}
+                width={300}
+                height={5}
             />
             <div className="w-fit flex gap-4">
                 <GetIcon icon="BiLoaderAlt" className="w-6 h-6 animate-spin" />

@@ -8,7 +8,7 @@ import {
     registerSchema,
     updateFunnelSchema,
     updateOrgSchema,
-    userSchema,
+    updateUserSchema,
 } from "@/models";
 
 export const apiActions = {
@@ -40,7 +40,7 @@ export const apiActions = {
     updateMe: {
         path: "/v1/account",
         method: EHttpMethods.PATCH,
-        schema: userSchema,
+        schema: updateUserSchema,
     },
     updateMePass: {
         path: "/v1/account",

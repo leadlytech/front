@@ -40,14 +40,19 @@ export default function Page() {
 
     function onSubmit(data: TSchema) {
         startTransition(async () => {
-            const res = await makeApiRequest("updateMePass", { data });
-
-            if (res.success) {
-                toast.success(`Cadastro realizado com sucesso!`);
+            if (data.newPassword !== data.confirmNewPassword) {
+                toast.warning("As novas senhas não são iguais.");
                 return;
             }
 
-            toast.error(res.message || "system.notification.unknownError");
+            const res = await makeApiRequest("updateMePass", { data });
+
+            if (res.success) {
+                toast.success(`Senha alterada com sucesso!`);
+                return;
+            }
+
+            toast.error(res.message);
         });
     }
 

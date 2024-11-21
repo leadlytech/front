@@ -310,7 +310,7 @@ export default function Page({ params }: Props) {
             ) : (
                 <div className="w-full h-full flex flex-col justify-center items-center gap-4">
                     <Image
-                        src="/assets/svgs/void.svg"
+                        src="/assets/svg/void.svg"
                         alt="empty"
                         width={200}
                         height={200}

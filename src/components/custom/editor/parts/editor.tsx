@@ -142,7 +142,7 @@ export function DesignArea({
                 previewIndex !== components.length ? (
                     <div className="h-full flex flex-col justify-center items-center gap-4">
                         <Image
-                            src="/assets/svgs/drag.svg"
+                            src="/assets/svg/drag.svg"
                             alt="drag"
                             width={200}
                             height={200}

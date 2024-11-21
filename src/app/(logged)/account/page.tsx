@@ -29,7 +29,7 @@ import {
 
 export default function Page() {
     const [isPending, startTransition] = useTransition();
-    const user = useUserStore((state) => state.user);
+    const { user, loadUser } = useUserStore();
 
     const action = apiActions.updateMe;
     type TSchema = z.infer<typeof action.schema>;
@@ -49,6 +49,7 @@ export default function Page() {
             const res = await makeApiRequest("updateMe", { data });
 
             if (res.success) {
+                await loadUser();
                 toast.success(`Dados atualizados com sucesso!`);
                 return;
             }
@@ -95,8 +96,7 @@ export default function Page() {
                         </Avatar>
                         <div className="flex flex-col">
                             <h1>
-                                {`${user?.firstName} ${user?.lastName}`.trim()}{" "}
-                                ({user?.status})
+                                {`${user?.firstName} ${user?.lastName}`.trim()}
                             </h1>
                             <h2 className="text-gray-500 font-bold">
                                 {user?.email}

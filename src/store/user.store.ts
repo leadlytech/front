@@ -21,7 +21,7 @@ export async function fetchUser(): Promise<IUser | undefined> {
     } catch (error) {
         console.error("Error fetching user:", error);
     }
-    return undefined;
+    return;
 }
 
 export const useUserStore = create<Store>((set) => ({
@@ -44,7 +44,7 @@ export const useUserStore = create<Store>((set) => ({
     },
     loadUser: async () => {
         const userData = await fetchUser();
-        set({ user: userData, userOrgs: userData?.members });
+        if (userData) set({ user: userData, userOrgs: userData?.members });
         return userData !== undefined;
     },
 }));

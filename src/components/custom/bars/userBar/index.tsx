@@ -3,9 +3,12 @@
 import { ComponentProps } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { LogOut } from "lucide-react";
 
 import { routes } from "@/routes";
 import { useUserStore } from "@/store";
+import { removeCookie } from "@/actions";
 
 import { GetIcon } from "@/components/custom";
 
@@ -14,6 +17,7 @@ import {
     Sidebar,
     SidebarContent,
     SidebarHeader,
+    SidebarFooter,
     SidebarRail,
     SidebarGroup,
     SidebarGroupLabel,
@@ -33,7 +37,7 @@ const options = [
                 url: routes.account._,
             },
             {
-                title: "Trocar senha",
+                title: "Segurança",
                 icon: "FaUnlock",
                 url: routes.account.security,
             },
@@ -43,14 +47,20 @@ const options = [
 
 export function UserBar({ ...props }: ComponentProps<typeof Sidebar>) {
     const { user } = useUserStore();
+    const router = useRouter();
+
+    async function handleLogout() {
+        await removeCookie("auth");
+        router.refresh();
+    }
 
     return (
         <Sidebar collapsible="icon" {...props}>
             <SidebarHeader>
                 <Image
                     alt="logo"
-                    src="/assets/images/logo.png"
-                    width={100}
+                    src="/assets/svg/logo/logo.svg"
+                    width={120}
                     height={50}
                 />
             </SidebarHeader>
@@ -123,6 +133,19 @@ export function UserBar({ ...props }: ComponentProps<typeof Sidebar>) {
                     ) : undefined}
                 </ScrollArea>
             </SidebarContent>
+            <SidebarFooter>
+                <SidebarMenu>
+                    <SidebarMenuItem>
+                        <SidebarMenuButton
+                            className="flex justify-start items-center gap-2 cursor-pointer"
+                            onClick={handleLogout}
+                        >
+                            <LogOut />
+                            Sair
+                        </SidebarMenuButton>
+                    </SidebarMenuItem>
+                </SidebarMenu>
+            </SidebarFooter>
             <SidebarRail />
         </Sidebar>
     );

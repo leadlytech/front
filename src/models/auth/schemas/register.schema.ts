@@ -6,7 +6,13 @@ export const userSchema = z.object({
     lastName: z.string().min(3),
     email: z.string(),
     phoneNumber: z.string(),
-    password: z.string(),
+});
+
+export const updateUserSchema = z.object({
+    firstName: z.string().min(3),
+    lastName: z.string().min(3),
+    email: z.string().optional(),
+    phoneNumber: z.string().optional(),
 });
 
 export const registerSchema = userSchema.extend({
