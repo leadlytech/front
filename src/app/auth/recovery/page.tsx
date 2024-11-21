@@ -55,7 +55,7 @@ export default function Page() {
         <Form {...form}>
             <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="flex flex-col justify-between gap-8"
+                className="w-full flex flex-col justify-between gap-8"
             >
                 {token ? (
                     <>

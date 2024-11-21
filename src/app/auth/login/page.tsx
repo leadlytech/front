@@ -65,89 +65,97 @@ export default function Page() {
     }
 
     return (
-        <Form {...form}>
-            <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="flex flex-col justify-center items-center gap-4 max-w-3xl mx-auto py-2"
-            >
-                <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                        <FormItem className="w-full">
-                            <FormLabel>E-Mail</FormLabel>
-                            <FormControl>
-                                <Input
-                                    placeholder="johndoe@example.com"
-                                    type="email"
-                                    {...field}
-                                />
-                            </FormControl>
-
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="password"
-                    render={({ field }) => (
-                        <FormItem className="w-full">
-                            <FormLabel>Senha</FormLabel>
-                            <FormControl>
-                                <PasswordInput
-                                    placeholder="****************"
-                                    {...field}
-                                />
-                            </FormControl>
-
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <div className="w-full flex justify-end">
-                    <Link
-                        href="/auth/recovery"
-                        className="text-sm text-blue-700 hover:underline"
-                    >
-                        Esqueci a senha
-                    </Link>
-                </div>
-                <FormField
-                    control={form.control}
-                    name="remember"
-                    render={({ field }) => (
-                        <FormItem className="w-full flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
-                            <FormControl>
-                                <Checkbox
-                                    checked={field.value}
-                                    onCheckedChange={field.onChange}
-                                />
-                            </FormControl>
-                            <div className="space-y-1 leading-none">
-                                <FormLabel>Lembrar senha</FormLabel>
-                                <FormDescription>
-                                    Você não precisará inserir suas credenciais
-                                    por 7 dias
-                                </FormDescription>
+        <div className="w-full flex flex-col justify-center items-start gap-8">
+            <div className="flex flex-col">
+                <h1 className="text-2xl font-bold">É bom te ver por aqui!</h1>
+                <p>Insira suas informações para acessar a plataforma</p>
+            </div>
+            <Form {...form}>
+                <form
+                    onSubmit={form.handleSubmit(onSubmit)}
+                    className="w-full flex flex-col justify-center items-center gap-4"
+                >
+                    <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                            <FormItem className="w-full">
+                                <FormLabel>E-Mail</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        placeholder="johndoe@example.com"
+                                        type="email"
+                                        {...field}
+                                    />
+                                </FormControl>
                                 <FormMessage />
-                            </div>
-                        </FormItem>
-                    )}
-                />
-                <Button type="submit" className="w-full" disabled={isPending}>
-                    Entrar
-                </Button>
-                <p className="text-sm">
-                    Não possui uma conta?{" "}
-                    <Link
-                        href={routes.auth.register}
-                        className="text-blue-700 hover:underline"
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="password"
+                        render={({ field }) => (
+                            <FormItem className="w-full">
+                                <FormLabel>Senha</FormLabel>
+                                <FormControl>
+                                    <PasswordInput
+                                        placeholder="****************"
+                                        {...field}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <div className="w-full flex justify-end">
+                        <Link
+                            href="/auth/recovery"
+                            className="text-sm text-blue-700 hover:underline"
+                        >
+                            Esqueci a senha
+                        </Link>
+                    </div>
+                    <FormField
+                        control={form.control}
+                        name="remember"
+                        render={({ field }) => (
+                            <FormItem className="w-full flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                                <FormControl>
+                                    <Checkbox
+                                        checked={field.value}
+                                        onCheckedChange={field.onChange}
+                                    />
+                                </FormControl>
+                                <div className="space-y-1 leading-none">
+                                    <FormLabel>Lembrar senha</FormLabel>
+                                    <FormDescription>
+                                        Você não precisará inserir suas
+                                        credenciais por 7 dias
+                                    </FormDescription>
+                                    <FormMessage />
+                                </div>
+                            </FormItem>
+                        )}
+                    />
+                    <Button
+                        type="submit"
+                        className="w-full"
+                        disabled={isPending}
                     >
-                        Então cadastre-se!
-                    </Link>
-                </p>
-            </form>
-        </Form>
+                        Entrar
+                    </Button>
+                    <p className="text-sm">
+                        Não possui uma conta?{" "}
+                        <Link
+                            href={routes.auth.register}
+                            className="text-blue-700 hover:underline"
+                        >
+                            Então cadastre-se!
+                        </Link>
+                    </p>
+                </form>
+            </Form>
+        </div>
     );
 }
