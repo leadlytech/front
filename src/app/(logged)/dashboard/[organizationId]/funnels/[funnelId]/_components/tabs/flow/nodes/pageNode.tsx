@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { memo } from "react";
-import { Handle, Position } from "@xyflow/react";
+import { Position } from "@xyflow/react";
 
 import { CustomNodeProps } from "@/interfaces";
+
+import { DefaultHandle } from "../handles";
 
 import { BaseNode } from "./baseNode";
 
@@ -50,13 +52,10 @@ export const PageNode = memo((props: CustomNodeProps<NodeData>) => {
                                         <GetIcon icon={navigation.icon} />
                                         <h1>{navigation.title}</h1>
                                         {navigation.isConnectable ? (
-                                            <Handle
+                                            <DefaultHandle
                                                 id={`${props.id}-${index}`}
                                                 type="source"
                                                 position={Position.Right}
-                                                isConnectable={
-                                                    props.isConnectable
-                                                }
                                                 style={{
                                                     top: `${62 + 49 * index}px`,
                                                     right: "10px",
@@ -69,11 +68,7 @@ export const PageNode = memo((props: CustomNodeProps<NodeData>) => {
                         </div>
                     ) : undefined}
                 </div>
-                <Handle
-                    type="target"
-                    position={Position.Left}
-                    isConnectable={props.isConnectable}
-                />
+                <DefaultHandle type="target" position={Position.Left} />
             </>
         </BaseNode>
     );

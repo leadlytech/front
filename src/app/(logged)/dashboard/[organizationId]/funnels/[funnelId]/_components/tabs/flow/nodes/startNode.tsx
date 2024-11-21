@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { memo } from "react";
-import { Handle, Position } from "@xyflow/react";
+import { Position } from "@xyflow/react";
 
 import { CustomNodeProps } from "@/interfaces";
+
+import { DefaultHandle } from "../handles";
 
 import { BaseNode } from "./baseNode";
 
@@ -20,11 +22,7 @@ export const StartNode = memo((props: CustomNodeProps<NodeData>) => {
                 <div>
                     <h1>🍀 Começo do funil</h1>
                 </div>
-                <Handle
-                    type="source"
-                    position={Position.Right}
-                    isConnectable={true}
-                />
+                <DefaultHandle type="source" position={Position.Right} />
             </>
         </BaseNode>
     );

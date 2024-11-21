@@ -13,15 +13,19 @@ import {
     addEdge,
     BackgroundVariant,
     useReactFlow,
+    ColorMode,
+    Edge,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { toast } from "sonner";
+import { useTheme } from "next-themes";
 
-import { defaultNodesData, nodeTypes } from "./nodes";
 import { makeApiRequest } from "@/actions";
 import { IFunnel } from "@/models";
 import { useNodeStore } from "@/store";
 import { DefineNode, ENodeType, TEdge } from "@/interfaces";
+
+import { defaultNodesData, nodeTypes } from "./nodes";
 
 import Sidebar from "./sidebar";
 import { DnDProvider, useDnD } from "./DnDContext";
@@ -99,6 +103,7 @@ type Props = {
 // ];
 
 function DnDFlow(props: Props) {
+    const { theme } = useTheme();
     const reactFlowWrapper = useRef(null);
     const [nodes, setNodes, onNodesChange] = useNodesState<DefineNode>([
         {
@@ -178,6 +183,7 @@ function DnDFlow(props: Props) {
                         id: edge.id,
                         source: edge.destinyId,
                         target: edge.originId,
+                        animated: true,
                     };
                 });
 
@@ -227,10 +233,6 @@ function DnDFlow(props: Props) {
         toast.error("Falha ao salvar o funil");
     }
 
-    useEffect(() => {
-        fetchData();
-    }, []);
-
     function saveComponents(components: any[]) {
         if (selectedNode) {
             setNodes((prevNodes) =>
@@ -256,6 +258,14 @@ function DnDFlow(props: Props) {
             setSelectedNode(undefined);
         }
     }
+
+    const handleDeleteEdge = (edgeData: Edge) => {
+        setEdges((eds) => eds.filter((edge) => edge.id !== edgeData.id));
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
 
     useEffect(() => {
         if (save) {
@@ -292,8 +302,9 @@ function DnDFlow(props: Props) {
                     nodeTypes={nodeTypes}
                     onDrop={onDrop}
                     onDragOver={onDragOver}
+                    onEdgeDoubleClick={(_, edge) => handleDeleteEdge(edge)}
                     fitView
-                    colorMode="dark"
+                    colorMode={theme as ColorMode}
                     className="w-full h-full border rounded-md [&_.react-flow__attribution]:!hidden"
                 >
                     <Controls />

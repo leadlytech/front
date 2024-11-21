@@ -3,7 +3,7 @@
 import { ReactNode } from "react";
 import Typewriter from "typewriter-effect";
 
-import { ImageThemed } from "@/components/custom";
+import { ImageThemed, ThemeControl } from "@/components/custom";
 
 export function Structure({ children }: { children: ReactNode }) {
     return (
@@ -146,8 +146,11 @@ export function Structure({ children }: { children: ReactNode }) {
                     </div>
                 </div>
             </div>
-            <div className="w-full h-full md:max-w-lg p-4 flex justify-center items-center bg-background border rounded-2xl shadow-md">
+            <div className="w-full h-full md:max-w-lg p-4 flex flex-col justify-center items-center gap-2 bg-background border rounded-2xl shadow-md">
                 {children}
+                <div className="w-full h-full flex justify-end items-end">
+                    <ThemeControl />
+                </div>
             </div>
         </div>
     );

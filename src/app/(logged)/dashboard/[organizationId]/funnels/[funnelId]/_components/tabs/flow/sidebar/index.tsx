@@ -64,7 +64,7 @@ export default function SidebarComponent() {
                 size="icon"
                 variant="outline"
                 onClick={toggleSidebar}
-                className="absolute -top-2 -right-2 z-50"
+                className="absolute -top-2 -right-2 z-50 text-foreground"
             >
                 <GetIcon icon="FaPlus" />
             </Button>

@@ -92,3 +92,7 @@ body {
         @apply bg-background text-foreground;
     }
 }
+
+div.react-flow__panel.react-flow__attribution.bottom.right {
+    display: none !important;
+}

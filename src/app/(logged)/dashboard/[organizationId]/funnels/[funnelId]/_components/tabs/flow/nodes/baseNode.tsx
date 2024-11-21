@@ -53,13 +53,13 @@ export const BaseNode = (props: Props) => {
 
     return (
         <div
-            className="p-2 text-[#f8f8f8] bg-[#1E1E1E] border border-[#e5e7eb42] focus:border-[#e5e7eb] active:shadow-[0_0_0_0.5px_rgba(153,153,153,1)] hover:shadow-[0_1px_4px_1px_rgba(255,255,255,0.08)] rounded-sm"
+            className="p-2 text-foreground bg-background border focus:border-[#e5e7eb] active:shadow-[0_0_0_0.5px_rgba(153,153,153,1)] hover:shadow-[0_1px_4px_1px_rgba(255,255,255,0.08)] rounded-sm"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
             {props.children}
             {isHovered && !props.hideOptions && (
-                <div className="absolute -top-10 right-0 flex gap-2 justify-end text-white bg-transparent text-sm rounded shadow-lg p-2 z-50">
+                <div className="p-2 absolute -top-10 right-0 z-50 flex gap-2 justify-end text-white bg-transparent text-sm">
                     <Button
                         size="icon"
                         className="w-6 h-6 text-white bg-blue-400 hover:bg-blue-400"
