@@ -22,7 +22,11 @@ export const StartNode = memo((props: CustomNodeProps<NodeData>) => {
                 <div>
                     <h1>🍀 Começo do funil</h1>
                 </div>
-                <DefaultHandle type="source" position={Position.Right} />
+                <DefaultHandle
+                    id={`${nodeTypeKey}-${props.id}-SOURCE`}
+                    type="source"
+                    position={Position.Right}
+                />
             </>
         </BaseNode>
     );

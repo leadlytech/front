@@ -23,7 +23,7 @@ import { useTheme } from "next-themes";
 import { makeApiRequest } from "@/actions";
 import { IFunnel } from "@/models";
 import { useNodeStore } from "@/store";
-import { DefineNode, ENodeType, TEdge } from "@/interfaces";
+import { ComponentItem, DefineNode, ENodeType, TEdge } from "@/interfaces";
 
 import { defaultNodesData, nodeTypes } from "./nodes";
 
@@ -233,7 +233,7 @@ function DnDFlow(props: Props) {
         toast.error("Falha ao salvar o funil");
     }
 
-    function saveComponents(components: any[]) {
+    function saveComponents(components: ComponentItem[]) {
         if (selectedNode) {
             setNodes((prevNodes) =>
                 prevNodes.map((node) =>

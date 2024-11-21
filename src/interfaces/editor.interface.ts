@@ -6,6 +6,7 @@ export interface ComponentItem<S = any, V = any> {
     label: string;
     icon: string;
     type: ComponentType;
+    isConnectable?: boolean;
     style?: S; // Usando quando precisa alterar alguma característica visual do componente
     value?: V; // Usando para definir valores e comportamentos para o componente
 }

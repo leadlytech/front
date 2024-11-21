@@ -1,9 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { memo } from "react";
 import { Position } from "@xyflow/react";
 
-import { CustomNodeProps } from "@/interfaces";
+import { ComponentItem, CustomNodeProps } from "@/interfaces";
 
 import { DefaultHandle } from "../handles";
 
@@ -13,21 +11,12 @@ import { GetIcon } from "@/components/custom";
 
 export type NodeData = {
     name: string;
-    components?: unknown;
-    navigations?: Record<
-        string,
-        {
-            icon: string;
-            title: string;
-            isConnectable?: boolean;
-        }
-    >;
+    components?: ComponentItem[];
 };
 
 export const defaultNodeData: NodeData = {
     name: "Minha página",
     components: [],
-    navigations: {},
 };
 
 export const nodeTypeKey = "PAGE";
@@ -38,37 +27,38 @@ export const PageNode = memo((props: CustomNodeProps<NodeData>) => {
     return (
         <BaseNode node={props}>
             <>
-                <div className="flex flex-col items-center gap-2">
+                <div className="w-full flex flex-col items-center gap-2">
                     <h1>{data.name}</h1>
-                    {data.navigations &&
-                    Object.values(data.navigations).length ? (
-                        <div className="flex flex-col gap-2">
-                            {Object.values(data.navigations).map(
-                                (navigation, index: number) => (
-                                    <div
-                                        key={index}
-                                        className="p-2 flex gap-2 justify-start items-center border rounded-sm"
-                                    >
-                                        <GetIcon icon={navigation.icon} />
-                                        <h1>{navigation.title}</h1>
-                                        {navigation.isConnectable ? (
-                                            <DefaultHandle
-                                                id={`${props.id}-${index}`}
-                                                type="source"
-                                                position={Position.Right}
-                                                style={{
-                                                    top: `${62 + 49 * index}px`,
-                                                    right: "10px",
-                                                }}
-                                            />
-                                        ) : undefined}
-                                    </div>
-                                )
-                            )}
+                    {data.components && data.components.length ? (
+                        <div className="w-full flex flex-col gap-2">
+                            {data.components.map((component, index: number) => (
+                                <div
+                                    key={index}
+                                    className="w-full p-2 flex gap-2 justify-start items-center border rounded-sm"
+                                >
+                                    <GetIcon icon={component.icon} />
+                                    <h1>{component.label}</h1>
+                                    {component.isConnectable ? (
+                                        <DefaultHandle
+                                            id={`${nodeTypeKey}-${props.id}-${component.id}-SOURCE`}
+                                            type="source"
+                                            position={Position.Right}
+                                            style={{
+                                                top: `${62 + 49 * index}px`,
+                                                right: "10px",
+                                            }}
+                                        />
+                                    ) : undefined}
+                                </div>
+                            ))}
                         </div>
                     ) : undefined}
                 </div>
-                <DefaultHandle type="target" position={Position.Left} />
+                <DefaultHandle
+                    id={`${nodeTypeKey}-${props.id}-TARGET`}
+                    type="target"
+                    position={Position.Left}
+                />
             </>
         </BaseNode>
     );

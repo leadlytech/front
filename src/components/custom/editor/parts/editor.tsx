@@ -93,11 +93,12 @@ export function DesignArea({
             const data = e.dataTransfer?.getData("application/json");
             if (data && previewIndex !== null) {
                 const item = JSON.parse(data);
-                console.log("Soltou");
-                console.log(item);
                 setComponents((prev) => {
                     const newComponents = [...prev];
-                    newComponents.splice(previewIndex, 0, item);
+                    newComponents.splice(previewIndex, 0, {
+                        ...item,
+                        id: `e-${Date.now().toString()}`,
+                    });
                     return newComponents;
                 });
             }

@@ -4,7 +4,8 @@ import { useState, useEffect } from "react";
 
 import { makeApiRequest } from "@/actions";
 import { IFunnel } from "@/models";
-import { DefineNode, ENodeType } from "@/interfaces";
+import { DefineNode, ENodeType, TEdge } from "@/interfaces";
+import { getRandomInteger } from "@/utils";
 
 import { DesignArea } from "@/components/custom/editor/parts";
 
@@ -18,14 +19,18 @@ export default function Page(props: Props) {
     const [loading, setLoading] = useState(true);
     const [nodes, setNodes] = useState<DefineNode[]>([]);
     const [currentNodeIndex, setCurrentNodeIndex] = useState<number>(-1);
-    // const [edges, setEdges] = useState<TEdge[]>([]);
+    const [edges, setEdges] = useState<TEdge[]>([]);
 
     async function fetchData() {
+        console.log("props");
+        console.log(props);
         const res = await makeApiRequest<IFunnel>("getFunnelLive", {
             params: {
                 id: props.params.funnelId,
             },
         });
+
+        console.log(res);
 
         if (res.success) {
             const payload = res.payload?.payload;
@@ -47,9 +52,9 @@ export default function Page(props: Props) {
                     };
                 });
 
-                // if (newEdges.length) {
-                //     setEdges(newEdges);
-                // }
+                if (newEdges.length) {
+                    setEdges(newEdges);
+                }
 
                 if (newNodes.length) {
                     setNodes(newNodes);
@@ -83,9 +88,8 @@ export default function Page(props: Props) {
                             }
 
                             setCurrentNodeIndex(nextNodeIndex);
+                            setLoading(false);
                         }
-
-                        // setCurrentNodeIndex(startNodeIndex);
                     }
                 }
             }
@@ -99,43 +103,61 @@ export default function Page(props: Props) {
         fetchData();
     }, []);
 
-    // function goToNextNode() {
-    //     console.log("nodes");
-    //     console.log(nodes);
-    //     console.log("edges");
-    //     console.log(edges);
+    function handleComponentSelected(index: number) {
+        const currentNode = nodes[currentNodeIndex];
 
-    //     const currentNodeEdges = edges.filter(
-    //         (edge) => edge.source === nodes[currentNodeIndex].id
-    //     );
+        console.log("currentNode");
+        console.log(currentNode);
+        console.log(edges);
 
-    //     console.log(currentNodeEdges);
+        if (currentNode.data?.components) {
+            const components = currentNode.data.components;
+            const componentClicked = components[index];
 
-    //     if (currentNodeEdges.length) {
-    //         const nextNodeIndex = nodes.findIndex((node) => {
-    //             node.id === currentNodeEdges[0].target;
-    //         });
+            console.log("componentClicked");
+            console.log(componentClicked);
 
-    //         console.log(nextNodeIndex);
+            if (componentClicked.isConnectable) {
+                const possibleEdges = edges.filter((edge) =>
+                    edge.id.includes(componentClicked.id)
+                );
 
-    //         setCurrentNodeIndex(nextNodeIndex);
-    //     }
-    // }
+                console.log("possibleEdges");
+                console.log(possibleEdges);
 
-    // useEffect(() => {
-    //     if (currentNodeIndex !== -1) {
-    //         const currentNode = nodes[currentNodeIndex];
-    //         if (currentNode.type === ENodeType.START) {
-    //             goToNextNode();
-    //         }
-    //     }
-    // }, [currentNodeIndex]);
+                if (possibleEdges.length) {
+                    const nextEdgeIndex =
+                        possibleEdges.length === 1
+                            ? 0
+                            : getRandomInteger(0, possibleEdges.length - 1);
+
+                    console.log("nextEdgeIndex");
+                    console.log(nextEdgeIndex);
+
+                    const nextNodeId = possibleEdges[nextEdgeIndex].target;
+
+                    console.log("nextNodeId");
+                    console.log(nextNodeId);
+
+                    for (const nodeIndex in nodes) {
+                        const node = nodes[nodeIndex];
+                        if (node.id === nextNodeId) {
+                            console.log("nodeIndex");
+                            console.log(nodeIndex);
+                            setCurrentNodeIndex(nodeIndex as unknown as number);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     return (
         <div className="w-full h-screen">
             {loading ? (
                 <div className="w-full h-screen flex justify-center items-center">
-                    Loading...
+                    Carregando...
                 </div>
             ) : (
                 <div>
@@ -148,7 +170,7 @@ export default function Page(props: Props) {
                                 nodes[currentNodeIndex].data?.components || []
                             }
                             setComponents={() => {}}
-                            onSelectComponent={() => {}}
+                            onSelectComponent={handleComponentSelected}
                             liveMode={true}
                         />
                     ) : undefined}

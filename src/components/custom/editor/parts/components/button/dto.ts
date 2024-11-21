@@ -18,6 +18,7 @@ export const componentDefault: TComponent = {
     label: "Botão",
     icon: "IoMdRadioButtonOn",
     type: "button",
+    isConnectable: true,
     style: {
         backgroundColor: "#000000",
     },
