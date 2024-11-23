@@ -1,6 +1,7 @@
 export * from "./bars";
 export * from "./copyButton";
 export * from "./editor";
+export * from "./flow";
 export * from "./icons";
 export * from "./image";
 export * from "./initializer";

@@ -1,4 +1,4 @@
-import { ENodeType } from "@/app/(logged)/dashboard/[organizationId]/funnels/[funnelId]/_components/tabs/flow/nodes";
+import { ENodeType } from "@/components/custom/flow/nodes";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface IFunnel {

@@ -1,12 +1,6 @@
 import { MemoExoticComponent } from "react";
 
-import {
-    DefineNode,
-    CustomNodeProps,
-    TNodeTypes,
-    ENodeType,
-    TEdge,
-} from "@/interfaces";
+import { CustomNodeProps, TNodeTypes } from "@/interfaces";
 
 import {
     PageNode,
@@ -23,14 +17,15 @@ export const nodeTypes: Record<
     TNodeTypes,
     MemoExoticComponent<(props: CustomNodeProps) => JSX.Element>
 > = {
-    PAGE: PageNode,
     START: StartNode,
+    PAGE: PageNode,
+    WEBHOOK: PageNode,
+    REDIRECT: PageNode,
 };
-
-export { ENodeType };
-export type { DefineNode, CustomNodeProps, TNodeTypes, TEdge };
 
 export const defaultNodesData = {
     [startTypeKey]: { ...defaultStartData },
     [pageTypeKey]: { ...defaultPageData },
+    ["WEBHOOK"]: { ...defaultPageData },
+    ["REDIRECT"]: { ...defaultPageData },
 };

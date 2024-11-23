@@ -2,11 +2,13 @@
 
 import { NodeProps } from "@xyflow/react";
 
-export type TNodeTypes = "START" | "PAGE";
+export type TNodeTypes = "START" | "PAGE" | "WEBHOOK" | "REDIRECT";
 
 export enum ENodeType {
     START = "START",
     PAGE = "PAGE",
+    WEBHOOK = "WEBHOOK",
+    REDIRECT = "REDIRECT",
 }
 
 export type DefineNode<T = any> = {

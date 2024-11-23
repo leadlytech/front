@@ -3,7 +3,8 @@
 import { DragEvent } from "react";
 
 import { cn } from "@/lib/utils";
-import { useDnD } from "../DnDContext";
+import { TNodeTypes, ENodeType } from "@/interfaces";
+import { useDnDStore } from "@/store";
 
 import { GetIcon } from "@/components/custom";
 
@@ -20,7 +21,7 @@ import {
 interface INode {
     name: string;
     icon: string;
-    type: string;
+    type: TNodeTypes;
     disabled?: boolean;
 }
 
@@ -28,29 +29,29 @@ const availableNodes: INode[] = [
     {
         name: "Página",
         icon: "RiPagesFill",
-        type: "PAGE",
+        type: ENodeType.PAGE,
     },
     {
         name: "Webhook",
         icon: "MdWebhook",
-        type: "WEBHOOK",
+        type: ENodeType.WEBHOOK,
         disabled: true,
     },
     {
         name: "Link",
         icon: "FaLink",
-        type: "REDIRECT",
+        type: ENodeType.REDIRECT,
         disabled: true,
     },
 ];
 
 export default function SidebarComponent() {
-    const { setType } = useDnD();
+    const { setType } = useDnDStore();
     const { toggleSidebar, open } = useSidebar();
 
     const onDragStart = (
         event: DragEvent<HTMLDivElement>,
-        nodeType: string
+        nodeType: TNodeTypes
     ) => {
         if (setType) {
             setType(nodeType);

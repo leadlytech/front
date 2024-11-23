@@ -1,0 +1,263 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
+
+import { useCallback, useEffect, useRef, useState, DragEvent } from "react";
+import {
+    ReactFlow,
+    Controls,
+    Background,
+    Panel,
+    useNodesState,
+    useEdgesState,
+    addEdge,
+    BackgroundVariant,
+    useReactFlow,
+    ColorMode,
+    Edge,
+} from "@xyflow/react";
+import "@xyflow/react/dist/style.css";
+import { toast } from "sonner";
+import { useTheme } from "next-themes";
+
+import { makeApiRequest } from "@/actions";
+import { IFunnel } from "@/models";
+import { useDnDStore, useNodeStore } from "@/store";
+import { ComponentItem, DefineNode, ENodeType, TEdge } from "@/interfaces";
+
+import { defaultNodesData, nodeTypes } from "./nodes";
+
+import Sidebar from "./sidebar";
+
+import { GetIcon, Editor } from "@/components/custom";
+
+import { Button, SidebarProvider } from "@/components/ui";
+
+type Props = {
+    params: {
+        organizationId: string;
+        funnelId: string;
+    };
+};
+
+export function DnDFlow(props: Props) {
+    const { theme } = useTheme();
+    const reactFlowWrapper = useRef(null);
+    const [nodes, setNodes, onNodesChange] = useNodesState<DefineNode>([
+        {
+            id: String(new Date().getTime()),
+            type: "START",
+            position: { x: 0, y: 0 },
+            draggable: false,
+            data: {},
+        },
+    ]);
+    const [edges, setEdges, onEdgesChange] = useEdgesState<TEdge>([]);
+    const { screenToFlowPosition } = useReactFlow();
+    const { type } = useDnDStore();
+    const { node: selectedNode, setNode: setSelectedNode } = useNodeStore();
+
+    const [save, setSave] = useState<boolean>(false);
+
+    const onConnect = useCallback<any>(
+        (params: TEdge) =>
+            setEdges((prevEdges) =>
+                addEdge({ ...params, animated: true }, prevEdges)
+            ),
+        []
+    );
+
+    const onDragOver = useCallback((event: DragEvent<HTMLDivElement>) => {
+        event.preventDefault();
+        event.dataTransfer.dropEffect = "move";
+    }, []);
+
+    const onDrop = useCallback(
+        (event: DragEvent<HTMLDivElement>) => {
+            event.preventDefault();
+
+            if (!type) {
+                return;
+            }
+
+            const position = screenToFlowPosition({
+                x: event.clientX,
+                y: event.clientY,
+            });
+            const newNode = {
+                id: String(new Date().getTime()),
+                type,
+                position,
+                data: defaultNodesData[type],
+            };
+
+            setNodes((nds) => nds.concat(newNode));
+        },
+        [screenToFlowPosition, type]
+    );
+
+    async function fetchData() {
+        const res = await makeApiRequest<IFunnel>("getFunnel", {
+            params: {
+                organizationId: props.params.organizationId,
+                id: props.params.funnelId,
+            },
+        });
+
+        if (res.success) {
+            const payload = res.payload?.payload;
+            if (payload) {
+                const newNodes = payload.Step?.map((step) => {
+                    return {
+                        id: step.id,
+                        type: step.type,
+                        draggable: step.type !== ENodeType.START,
+                        position: step.config.position,
+                        data: step.data,
+                    };
+                });
+                const newEdges = payload.Edge?.map((edge) => {
+                    return {
+                        id: edge.id,
+                        source: edge.destinyId,
+                        target: edge.originId,
+                        animated: true,
+                    };
+                });
+
+                if (newNodes.length) {
+                    setNodes(newNodes);
+                }
+
+                if (newEdges.length) {
+                    setEdges(newEdges);
+                }
+            }
+            return;
+        }
+
+        toast.error(res.message);
+    }
+
+    async function handleSaveFunnel() {
+        const res = await makeApiRequest("updateFunnel", {
+            params: {
+                organizationId: props.params.organizationId,
+                id: props.params.funnelId,
+            },
+            data: {
+                steps: nodes.map((node) => ({
+                    id: node.id,
+                    type: node.type,
+                    name: node.data?.title || node.type,
+                    config: {
+                        position: node.position,
+                    },
+                    data: node.data,
+                })),
+                edges: edges.map((edge) => ({
+                    id: edge.id,
+                    destinyId: edge.source,
+                    originId: edge.target,
+                })),
+            },
+        });
+
+        if (res.success) {
+            toast.success("Funil salvo com sucesso!");
+            return;
+        }
+
+        toast.error("Falha ao salvar o funil");
+    }
+
+    function saveComponents(components: ComponentItem[]) {
+        if (selectedNode) {
+            setNodes((prevNodes) =>
+                prevNodes.map((node) =>
+                    node.id === selectedNode.id
+                        ? {
+                              ...node,
+                              data: {
+                                  ...node.data,
+                                  components,
+                              },
+                          }
+                        : node
+                )
+            );
+            setSelectedNode(undefined);
+            setSave(true);
+        }
+    }
+
+    function discardComponentsChanges() {
+        if (selectedNode) {
+            setSelectedNode(undefined);
+        }
+    }
+
+    const handleDeleteEdge = (edgeData: Edge) => {
+        setEdges((eds) => eds.filter((edge) => edge.id !== edgeData.id));
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        if (save) {
+            handleSaveFunnel();
+            setSave(false);
+        }
+    }, [save]);
+
+    return (
+        <div className="w-full h-full flex flex-col justify-center gap-2">
+            <div className="flex gap-8 justify-end items-center">
+                {selectedNode ? (
+                    <Editor
+                        currentComponents={selectedNode.data.components}
+                        saveComponents={saveComponents}
+                        discardComponentsChanges={discardComponentsChanges}
+                    />
+                ) : undefined}
+                <Button
+                    size="icon"
+                    className="text-white bg-green-500"
+                    onClick={handleSaveFunnel}
+                >
+                    <GetIcon icon="FaSave" />
+                </Button>
+            </div>
+            <div className="w-full h-full" ref={reactFlowWrapper}>
+                <ReactFlow
+                    nodes={nodes}
+                    edges={edges}
+                    onNodesChange={onNodesChange}
+                    onEdgesChange={onEdgesChange}
+                    onConnect={onConnect}
+                    nodeTypes={nodeTypes}
+                    onDrop={onDrop}
+                    onDragOver={onDragOver}
+                    onEdgeDoubleClick={(_, edge) => handleDeleteEdge(edge)}
+                    fitView
+                    colorMode={theme as ColorMode}
+                    className="w-full h-full border rounded-md [&_.react-flow__attribution]:!hidden"
+                >
+                    <Controls />
+                    <Panel position="top-right">
+                        <SidebarProvider defaultOpen={false}>
+                            <Sidebar />
+                        </SidebarProvider>
+                    </Panel>
+                    <Background
+                        className="!bg-background"
+                        variant={BackgroundVariant.Dots}
+                        gap={12}
+                        size={1}
+                    />
+                </ReactFlow>
+            </div>
+        </div>
+    );
+}
