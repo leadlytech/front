@@ -11,7 +11,14 @@ export enum ENodeType {
     REDIRECT = "REDIRECT",
 }
 
-export type DefineNode<T = any> = {
+export interface INodeOption {
+    name: string;
+    icon: string;
+    type: TNodeTypes;
+    disabled?: boolean;
+}
+
+export type TNode<T = any> = {
     id: string;
     type?: TNodeTypes;
     draggable?: boolean;

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 
 import { makeApiRequest } from "@/actions";
 import { IFunnel } from "@/models";
-import { DefineNode, ENodeType, TEdge } from "@/interfaces";
+import { TNode, ENodeType, TEdge } from "@/interfaces";
 import { getRandomInteger } from "@/utils";
 
 import { DesignArea } from "@/components/custom/editor/parts";
@@ -17,7 +17,7 @@ type Props = {
 
 export default function Page(props: Props) {
     const [loading, setLoading] = useState(true);
-    const [nodes, setNodes] = useState<DefineNode[]>([]);
+    const [nodes, setNodes] = useState<TNode[]>([]);
     const [currentNodeIndex, setCurrentNodeIndex] = useState<number>(-1);
     const [edges, setEdges] = useState<TEdge[]>([]);
 

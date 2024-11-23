@@ -3,7 +3,7 @@
 import { DragEvent } from "react";
 
 import { cn } from "@/lib/utils";
-import { TNodeTypes, ENodeType } from "@/interfaces";
+import { TNodeTypes, INodeOption } from "@/interfaces";
 import { useDnDStore } from "@/store";
 
 import { GetIcon } from "@/components/custom";
@@ -18,34 +18,11 @@ import {
     Separator,
 } from "@/components/ui";
 
-interface INode {
-    name: string;
-    icon: string;
-    type: TNodeTypes;
-    disabled?: boolean;
-}
+type Props = {
+    availableNodes: Array<INodeOption>;
+};
 
-const availableNodes: INode[] = [
-    {
-        name: "Página",
-        icon: "RiPagesFill",
-        type: ENodeType.PAGE,
-    },
-    {
-        name: "Webhook",
-        icon: "MdWebhook",
-        type: ENodeType.WEBHOOK,
-        disabled: true,
-    },
-    {
-        name: "Link",
-        icon: "FaLink",
-        type: ENodeType.REDIRECT,
-        disabled: true,
-    },
-];
-
-export default function SidebarComponent() {
+export default function SidebarComponent(props: Props) {
     const { setType } = useDnDStore();
     const { toggleSidebar, open } = useSidebar();
 
@@ -91,7 +68,7 @@ export default function SidebarComponent() {
                             Arraste e solte os nós abaixo para montar seu funil
                         </h1>
                         <div className="mt-4 flex flex-col gap-2">
-                            {availableNodes.map((node) => (
+                            {props.availableNodes.map((node) => (
                                 <div
                                     key={node.type}
                                     className={cn(

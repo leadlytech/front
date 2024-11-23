@@ -1,4 +1,4 @@
-import { ENodeType } from "@/components/custom/flow/nodes";
+import { ENodeType } from "@/interfaces";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface IFunnel {

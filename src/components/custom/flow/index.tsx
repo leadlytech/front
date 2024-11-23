@@ -1,15 +1,10 @@
 import { ReactFlowProvider } from "@xyflow/react";
 
-import { DnDFlow } from "./flow";
+// import { INodeOption, TNode, TEdge } from "@/interfaces";
 
-type Props = {
-    params: {
-        organizationId: string;
-        funnelId: string;
-    };
-};
+import { DnDFlow, FlowProps } from "./flow";
 
-export function FlowTab(props: Props) {
+export function Flow(props: FlowProps) {
     return (
         <ReactFlowProvider>
             <DnDFlow {...props} />
