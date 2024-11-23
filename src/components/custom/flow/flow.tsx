@@ -18,14 +18,12 @@ import {
 import "@xyflow/react/dist/style.css";
 import { useTheme } from "next-themes";
 
-import { useDnDStore, useNodeStore } from "@/store";
-import { ComponentItem, INodeOption, TNode, TEdge } from "@/interfaces";
+import { useDnDStore } from "@/store";
+import { INodeOption, TNode, TEdge } from "@/interfaces";
 
 import { defaultNodesData, nodeTypes } from "./nodes";
 
 import Sidebar from "./sidebar";
-
-import { Editor } from "@/components/custom";
 
 import { SidebarProvider } from "@/components/ui";
 
@@ -59,7 +57,6 @@ export function DnDFlow({
     );
     const { screenToFlowPosition } = useReactFlow();
     const { type } = useDnDStore();
-    const { node: selectedNode, setNode: setSelectedNode } = useNodeStore();
 
     const [save, setSave] = useState<boolean>(false);
 
@@ -100,32 +97,6 @@ export function DnDFlow({
         [screenToFlowPosition, type]
     );
 
-    function saveComponents(components: ComponentItem[]) {
-        if (selectedNode) {
-            setNodes((prevNodes) =>
-                prevNodes.map((node) =>
-                    node.id === selectedNode.id
-                        ? {
-                              ...node,
-                              data: {
-                                  ...node.data,
-                                  components,
-                              },
-                          }
-                        : node
-                )
-            );
-            setSelectedNode(undefined);
-            setSave(true);
-        }
-    }
-
-    function discardComponentsChanges() {
-        if (selectedNode) {
-            setSelectedNode(undefined);
-        }
-    }
-
     const handleDeleteEdge = (edgeData: Edge) => {
         setEdges((eds) => eds.filter((edge) => edge.id !== edgeData.id));
     };
@@ -149,43 +120,34 @@ export function DnDFlow({
     }, [save]);
 
     return (
-        <div className="w-full h-full flex flex-col justify-center gap-2">
-            {selectedNode ? (
-                <Editor
-                    currentComponents={selectedNode.data.components}
-                    saveComponents={saveComponents}
-                    discardComponentsChanges={discardComponentsChanges}
+        <div className="w-full h-full" ref={reactFlowWrapper}>
+            <ReactFlow
+                nodes={nodes}
+                edges={edges}
+                onNodesChange={onNodesChange}
+                onEdgesChange={onEdgesChange}
+                onConnect={onConnect}
+                nodeTypes={nodeTypes}
+                onDrop={onDrop}
+                onDragOver={onDragOver}
+                onEdgeDoubleClick={(_, edge) => handleDeleteEdge(edge)}
+                fitView
+                colorMode={theme as ColorMode}
+                className="w-full h-full border rounded-md [&_.react-flow__attribution]:!hidden"
+            >
+                <Controls />
+                <Panel position="top-right">
+                    <SidebarProvider defaultOpen={false}>
+                        <Sidebar availableNodes={availableNodes} />
+                    </SidebarProvider>
+                </Panel>
+                <Background
+                    className="!bg-background"
+                    variant={BackgroundVariant.Dots}
+                    gap={12}
+                    size={1}
                 />
-            ) : undefined}
-            <div className="w-full h-full" ref={reactFlowWrapper}>
-                <ReactFlow
-                    nodes={nodes}
-                    edges={edges}
-                    onNodesChange={onNodesChange}
-                    onEdgesChange={onEdgesChange}
-                    onConnect={onConnect}
-                    nodeTypes={nodeTypes}
-                    onDrop={onDrop}
-                    onDragOver={onDragOver}
-                    onEdgeDoubleClick={(_, edge) => handleDeleteEdge(edge)}
-                    fitView
-                    colorMode={theme as ColorMode}
-                    className="w-full h-full border rounded-md [&_.react-flow__attribution]:!hidden"
-                >
-                    <Controls />
-                    <Panel position="top-right">
-                        <SidebarProvider defaultOpen={false}>
-                            <Sidebar availableNodes={availableNodes} />
-                        </SidebarProvider>
-                    </Panel>
-                    <Background
-                        className="!bg-background"
-                        variant={BackgroundVariant.Dots}
-                        gap={12}
-                        size={1}
-                    />
-                </ReactFlow>
-            </div>
+            </ReactFlow>
         </div>
     );
 }

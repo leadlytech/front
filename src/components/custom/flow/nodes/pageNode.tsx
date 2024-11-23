@@ -1,5 +1,8 @@
-import { memo } from "react";
-import { Position } from "@xyflow/react";
+"use client";
+
+import { memo, useState } from "react";
+import { Position, useReactFlow } from "@xyflow/react";
+import { toast } from "sonner";
 
 import { ComponentItem, CustomNodeProps } from "@/interfaces";
 
@@ -7,7 +10,7 @@ import { DefaultHandle } from "../handles";
 
 import { BaseNode } from "./baseNode";
 
-import { GetIcon } from "@/components/custom";
+import { GetIcon, Editor } from "@/components/custom";
 
 export type NodeData = {
     name: string;
@@ -22,11 +25,39 @@ export const defaultNodeData: NodeData = {
 export const nodeTypeKey = "PAGE";
 
 export const PageNode = memo((props: CustomNodeProps<NodeData>) => {
+    const { setNodes } = useReactFlow();
     const data = props.data;
 
+    const [isSelected, setIsSelected] = useState(false);
+
+    function saveComponents(components: ComponentItem[]) {
+        setNodes((prevNodes) =>
+            prevNodes.map((node) =>
+                node.id === props.id
+                    ? {
+                          ...node,
+                          data: {
+                              ...node.data,
+                              components,
+                          },
+                      }
+                    : node
+            )
+        );
+        setIsSelected(false);
+        toast.info("Não se esqueça de salvar as alterações");
+    }
+
     return (
-        <BaseNode node={props}>
+        <BaseNode node={props} setIsSelected={setIsSelected}>
             <>
+                {isSelected ? (
+                    <Editor
+                        currentComponents={props.data.components || []}
+                        saveComponents={saveComponents}
+                        discardComponentsChanges={() => setIsSelected(false)}
+                    />
+                ) : undefined}
                 <div className="w-full flex flex-col items-center gap-2">
                     <h1>{data.name}</h1>
                     {data.components && data.components.length ? (

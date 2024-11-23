@@ -3,8 +3,6 @@
 import { ReactNode, useState } from "react";
 import { useReactFlow } from "@xyflow/react";
 
-import { useNodeStore } from "@/store";
-
 import { CustomNodeProps } from "@/interfaces";
 
 import { GetIcon } from "@/components/custom";
@@ -13,6 +11,7 @@ import { Button } from "@/components/ui";
 
 type Props = {
     node: CustomNodeProps;
+    setIsSelected: (value: boolean) => void;
     hideOptions?: boolean;
     children: ReactNode;
 };
@@ -20,7 +19,6 @@ type Props = {
 export const BaseNode = (props: Props) => {
     const flow = useReactFlow();
     const [isHovered, setIsHovered] = useState(false);
-    const { setNode } = useNodeStore();
 
     function handleRemoveNode() {
         const nodeId = props.node.id;
@@ -63,7 +61,7 @@ export const BaseNode = (props: Props) => {
                     <Button
                         size="icon"
                         className="w-6 h-6 text-white bg-blue-400 hover:bg-blue-400"
-                        onClick={() => setNode(props.node)}
+                        onClick={() => props.setIsSelected(true)}
                     >
                         <GetIcon icon="MdEdit" />
                     </Button>
