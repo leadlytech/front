@@ -30,7 +30,7 @@ export function Editor({
     const [components, setComponents] =
         useState<ComponentItem[]>(currentComponents);
 
-    const handleSelectComponent = (index: number) => {
+    const handleSelectComponent = (index: number | null) => {
         setSelectedIndex(index);
     };
 
@@ -75,6 +75,7 @@ export function Editor({
                         <EditorMenu />
                         <div className="w-full h-full flex-grow flex items-center justify-center border rounded-md">
                             <DesignArea
+                                selectedIndex={selectedIndex ?? undefined}
                                 onSelectComponent={handleSelectComponent}
                                 components={components}
                                 setComponents={setComponents}
