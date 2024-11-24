@@ -2,16 +2,17 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
+import "react-quill/dist/quill.snow.css";
 
 import { ComponentItem } from "@/interfaces";
+import { cn } from "@/lib/utils";
 
 import { RenderComponent } from "./render";
 
 import { GetIcon } from "@/components/custom";
-import { Button } from "@/components/ui";
-import { cn } from "@/lib/utils";
 
-// Área de design onde os componentes são adicionados
+import { Button } from "@/components/ui";
+
 export function DesignArea({
     onSelectComponent,
     components,
@@ -137,7 +138,7 @@ export function DesignArea({
     };
 
     return (
-        <div ref={ref} className="h-full p-4 border rounded-md overflow-auto">
+        <div ref={ref} className="h-full p-4">
             <div className="h-full flex flex-col items-center space-y-4">
                 {components.length === 0 &&
                 previewIndex !== components.length ? (
@@ -197,7 +198,7 @@ export function DesignArea({
                                 className={cn(
                                     "w-full max-w-sm border-2 border-transparent",
                                     {
-                                        "cursor-move": !liveMode,
+                                        "cursor-pointer": !liveMode,
                                         "relative border-blue-500 rounded-md":
                                             isHovered,
                                     }

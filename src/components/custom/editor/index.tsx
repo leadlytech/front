@@ -73,17 +73,15 @@ export function Editor({
                     </div>
                     <div className="h-full flex gap-1 overflow-hidden relative">
                         <EditorMenu />
-                        <div className="w-full h-full flex-grow flex items-center justify-center">
-                            <div className="w-full h-full">
-                                <DesignArea
-                                    onSelectComponent={handleSelectComponent}
-                                    components={components}
-                                    setComponents={setComponents}
-                                    liveMode={false}
-                                />
-                            </div>
+                        <div className="w-full h-full flex-grow flex items-center justify-center border rounded-md">
+                            <DesignArea
+                                onSelectComponent={handleSelectComponent}
+                                components={components}
+                                setComponents={setComponents}
+                                liveMode={false}
+                            />
                         </div>
-                        <div className="w-2/5 h-full p-2 rounded-md border">
+                        <div className="w-2/5 h-full p-2 flex flex-grow overflow-y-auto rounded-md border">
                             <ComponentControl
                                 component={
                                     selectedIndex !== null

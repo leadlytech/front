@@ -11,7 +11,7 @@ import { Button } from "@/components/ui";
 
 type Props = {
     node: CustomNodeProps;
-    setIsSelected: (value: boolean) => void;
+    setIsSelected?: (value: boolean) => void;
     hideOptions?: boolean;
     children: ReactNode;
 };
@@ -61,7 +61,9 @@ export const BaseNode = (props: Props) => {
                     <Button
                         size="icon"
                         className="w-6 h-6 text-white bg-blue-400 hover:bg-blue-400"
-                        onClick={() => props.setIsSelected(true)}
+                        onClick={() =>
+                            props.setIsSelected && props.setIsSelected(true)
+                        }
                     >
                         <GetIcon icon="MdEdit" />
                     </Button>

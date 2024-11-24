@@ -39,6 +39,13 @@ export function Options({ component, onEdit }: Props) {
                 theme="snow"
                 value={component.value?.content}
                 onChange={handleTextChange}
+                modules={{
+                    toolbar: [
+                        ["bold", "italic", "underline", "strike", "link"],
+                        [{ color: [] }, { background: [] }],
+                        ["clean"],
+                    ],
+                }}
             />
             <label className="block mt-4 mb-2 text-gray-700">
                 Cor do Texto

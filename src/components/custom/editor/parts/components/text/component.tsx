@@ -1,3 +1,5 @@
+import DOMPurify from "dompurify";
+
 import { TComponent } from "./dto";
 
 type Props = {
@@ -5,13 +7,16 @@ type Props = {
 };
 
 export function Component({ component }: Props) {
+    const sanitizedHtml = DOMPurify.sanitize(component.value?.content || "");
+
+    // Renderiza o conteúdo do texto usando DOMPurify para evitar ataques de Cross-Site Scripting (XSS)
     return (
         <div
-            className="w-full p-2 bg-gray-100 text-gray-700 rounded-lg border border-gray-300"
+            className="w-full p-2 text-foreground"
             style={{
                 color: component.style?.textColor,
             }}
-            dangerouslySetInnerHTML={{ __html: component.value?.content || "" }}
+            dangerouslySetInnerHTML={{ __html: sanitizedHtml }}
         />
     );
 }
