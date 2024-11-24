@@ -13,9 +13,6 @@ export function Component({ component }: Props) {
     return (
         <div
             className="w-full p-2 text-foreground"
-            style={{
-                color: component.style?.textColor,
-            }}
             dangerouslySetInnerHTML={{ __html: sanitizedHtml }}
         />
     );

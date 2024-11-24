@@ -103,7 +103,8 @@ export default function Page(props: Props) {
         fetchData();
     }, []);
 
-    function handleComponentSelected(index: number) {
+    function handleComponentSelected(index: number | null) {
+        if (!index) return;
         const currentNode = nodes[currentNodeIndex];
 
         console.log("currentNode");
@@ -154,13 +155,13 @@ export default function Page(props: Props) {
     }
 
     return (
-        <div className="w-full h-screen">
+        <div className="w-screen h-screen">
             {loading ? (
-                <div className="w-full h-screen flex justify-center items-center">
+                <div className="w-screen h-screen flex justify-center items-center">
                     Carregando...
                 </div>
             ) : (
-                <div>
+                <div className="w-screen h-screen">
                     {currentNodeIndex !== -1 &&
                     nodes[currentNodeIndex].data &&
                     nodes[currentNodeIndex].data.components &&

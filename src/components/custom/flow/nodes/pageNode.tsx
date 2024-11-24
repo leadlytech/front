@@ -30,16 +30,13 @@ export const PageNode = memo((props: CustomNodeProps<NodeData>) => {
 
     const [isSelected, setIsSelected] = useState(false);
 
-    function saveComponents(components: ComponentItem[]) {
+    function saveData(data: NodeData) {
         setNodes((prevNodes) =>
             prevNodes.map((node) =>
                 node.id === props.id
                     ? {
                           ...node,
-                          data: {
-                              ...node.data,
-                              components,
-                          },
+                          data,
                       }
                     : node
             )
@@ -53,8 +50,8 @@ export const PageNode = memo((props: CustomNodeProps<NodeData>) => {
             <>
                 {isSelected ? (
                     <Editor
-                        currentComponents={props.data.components || []}
-                        saveComponents={saveComponents}
+                        currentData={props.data}
+                        saveData={saveData}
                         discardComponentsChanges={() => setIsSelected(false)}
                     />
                 ) : undefined}

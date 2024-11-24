@@ -21,15 +21,6 @@ export function Options({ component, onEdit }: Props) {
         }
     };
 
-    const handleColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        onEdit({
-            style: {
-                ...component.style,
-                textColor: e.target.value,
-            },
-        });
-    };
-
     return (
         <div>
             <label className="block mb-2 text-gray-700">
@@ -46,14 +37,6 @@ export function Options({ component, onEdit }: Props) {
                         ["clean"],
                     ],
                 }}
-            />
-            <label className="block mt-4 mb-2 text-gray-700">
-                Cor do Texto
-            </label>
-            <input
-                type="color"
-                onChange={handleColorChange}
-                defaultValue={component.style?.textColor || "#000000"}
             />
         </div>
     );

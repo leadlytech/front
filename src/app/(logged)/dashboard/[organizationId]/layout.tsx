@@ -6,7 +6,7 @@ import { redirect, usePathname } from "next/navigation";
 import { useBreadcrumbStore, useUserStore } from "@/store";
 import { routes } from "@/routes";
 
-import { DashBar } from "@/components/custom";
+import { DashBar, ThemeControl } from "@/components/custom";
 
 import {
     Breadcrumb,
@@ -45,7 +45,7 @@ export default function Layout({
         <>
             <DashBar />
             <SidebarInset>
-                <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+                <header className="h-16 px-2 flex shrink-0 justify-between items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
                     <div className="flex items-center gap-2 px-4">
                         <SidebarTrigger className="-ml-1" />
                         <Separator
@@ -81,6 +81,7 @@ export default function Layout({
                             </BreadcrumbList>
                         </Breadcrumb>
                     </div>
+                    <ThemeControl />
                 </header>
                 <main className="flex flex-1 flex-col gap-4 p-4 pt-0">
                     {children}

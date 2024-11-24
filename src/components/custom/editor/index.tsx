@@ -5,6 +5,8 @@ import { ComponentItem } from "@/interfaces";
 
 import { DesignArea, ComponentControl, EditorMenu } from "./parts";
 
+import { NodeData } from "../flow/nodes/pageNode";
+
 import { GetIcon } from "@/components/custom";
 
 import {
@@ -16,19 +18,21 @@ import {
 } from "@/components/ui";
 
 type Props = {
-    currentComponents: ComponentItem[];
-    saveComponents: (components: ComponentItem[]) => void;
+    currentData: NodeData;
+    saveData: (data: NodeData) => void;
     discardComponentsChanges: () => void;
 };
 
 export function Editor({
-    currentComponents,
-    saveComponents,
+    currentData,
+    saveData,
     discardComponentsChanges,
 }: Props) {
+    const [name, setName] = useState<string>(currentData.name);
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-    const [components, setComponents] =
-        useState<ComponentItem[]>(currentComponents);
+    const [components, setComponents] = useState<ComponentItem[]>(
+        currentData.components || []
+    );
 
     const handleSelectComponent = (index: number | null) => {
         setSelectedIndex(index);
@@ -51,14 +55,22 @@ export function Editor({
         <Dialog open={true}>
             <DialogContent className="min-w-[95vw] h-[95vh] [&>button]:hidden">
                 <DialogTitle className="hidden">Editor de Página</DialogTitle>
-                <div className="flex flex-col gap-2">
+                <div className="h-[80vh] flex flex-col gap-2">
                     <div className="flex justify-between items-center gap-2">
-                        <Input defaultValue="Nome da página" />
+                        <Input
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                        />
                         <div className="flex justify-center items-center gap-2">
                             <Button
                                 size="icon"
                                 className="text-white bg-green-500"
-                                onClick={() => saveComponents(components)}
+                                onClick={() =>
+                                    saveData({
+                                        name,
+                                        components,
+                                    })
+                                }
                             >
                                 <GetIcon icon="FaSave" />
                             </Button>
@@ -71,9 +83,9 @@ export function Editor({
                             </Button>
                         </div>
                     </div>
-                    <div className="h-full flex gap-1 overflow-hidden relative">
+                    <div className="h-full flex gap-1 relative">
                         <EditorMenu />
-                        <div className="w-full h-full flex-grow flex items-center justify-center border rounded-md">
+                        <div className="w-full h-full border rounded-md">
                             <DesignArea
                                 selectedIndex={selectedIndex ?? undefined}
                                 onSelectComponent={handleSelectComponent}

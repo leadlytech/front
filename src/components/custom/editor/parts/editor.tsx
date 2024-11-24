@@ -11,7 +11,7 @@ import { RenderComponent } from "./render";
 
 import { GetIcon } from "@/components/custom";
 
-import { Button } from "@/components/ui";
+import { Button, ScrollArea } from "@/components/ui";
 
 export function DesignArea({
     selectedIndex,
@@ -141,132 +141,141 @@ export function DesignArea({
     };
 
     return (
-        <div
-            ref={ref}
-            className="h-full p-4 flex flex-col items-center space-y-4"
-        >
-            {components.length === 0 && previewIndex !== components.length ? (
-                <div className="h-full flex flex-col justify-center items-center gap-4">
-                    <Image
-                        src="/assets/svg/drag.svg"
-                        alt="drag"
-                        width={200}
-                        height={200}
-                    />
-                    <h1 className="text-muted-foreground">
-                        Arraste os componentes para cá!
-                    </h1>
-                </div>
-            ) : undefined}
-            {components.map((component: ComponentItem, index) => {
-                const isHovered = liveMode
-                    ? false
-                    : index === elementHoverIndex;
-                return (
-                    <React.Fragment key={index}>
-                        {previewIndex === index && (
-                            <div className="w-full max-w-sm p-4 text-muted-foreground bg-transparent border rounded transition">
-                                <div className="flex justify-center items-center gap-2 animate-bounce">
-                                    <GetIcon icon="IoIosArrowDropdown" />
-                                    Solte aqui
-                                </div>
-                            </div>
-                        )}
-                        <div
-                            draggable={liveMode ? false : dragEnabled}
-                            onDragStart={() => {
-                                if (!dragEnabled) return;
-                                setDraggedIndex(index);
-                            }}
-                            onDragOver={(e) => {
-                                e.preventDefault();
-                                setPreviewIndex(index);
-                            }}
-                            onDrop={() => {
-                                if (draggedIndex !== null) {
-                                    moveElementAtIndex(draggedIndex, index);
-                                    setDraggedIndex(null);
-                                }
-                                setPreviewIndex(null);
-                            }}
-                            onDragEnd={() => {
-                                setDraggedIndex(null);
-                                setPreviewIndex(null);
-                            }}
-                            onDragLeave={() => setPreviewIndex(null)}
-                            onClick={() => onSelectComponent(index)}
-                            onMouseEnter={() => setElementHoverIndex(index)}
-                            onMouseLeave={() => setElementHoverIndex(undefined)}
-                            className={cn(
-                                "w-full max-w-sm border-2 border-transparent",
-                                {
-                                    "cursor-pointer": !liveMode,
-                                    "relative border-blue-500 rounded-md":
-                                        isHovered,
-                                    "border-blue-500 rounded-md":
-                                        !liveMode && selectedIndex !== undefined
-                                            ? selectedIndex === index
-                                            : false,
-                                }
-                            )}
-                        >
-                            <RenderComponent component={component} />
-                            {isHovered ? (
-                                <div className="absolute top-1 left-1 z-50 flex gap-0 justify-start text-sm text-white bg-blue-400 shadow-lg rounded-md overflow-hidden">
-                                    <Button
-                                        size="icon"
-                                        variant="ghost"
-                                        className="w-8 h-8 cursor-move hover:bg-blue-700 rounded-none"
-                                        onMouseDown={() => setDragEnabled(true)}
-                                        onMouseUp={() => setDragEnabled(false)}
-                                        onMouseLeave={() =>
-                                            setDragEnabled(false)
-                                        }
-                                    >
-                                        <GetIcon icon="IoMoveSharp" />
-                                    </Button>
-                                    <Button
-                                        size="icon"
-                                        variant="ghost"
-                                        className="w-8 h-8 cursor-pointer hover:bg-blue-700 rounded-none"
-                                        onClick={() => onSelectComponent(index)}
-                                    >
-                                        <GetIcon icon="MdEdit" />
-                                    </Button>
-                                    <Button
-                                        size="icon"
-                                        variant="ghost"
-                                        className="w-8 h-8 cursor-pointer hover:bg-blue-700 rounded-none"
-                                        onClick={() =>
-                                            duplicateElementAtIndex(index)
-                                        }
-                                    >
-                                        <GetIcon icon="FaClone" />
-                                    </Button>
-                                    <Button
-                                        size="icon"
-                                        variant="ghost"
-                                        className="w-8 h-8 cursor-pointer hover:bg-blue-700 rounded-none"
-                                        onClick={() =>
-                                            removeElementAtIndex(index)
-                                        }
-                                    >
-                                        <GetIcon icon="FaTrash" />
-                                    </Button>
-                                </div>
-                            ) : undefined}
-                        </div>
-                    </React.Fragment>
-                );
-            })}
-            {previewIndex === components.length && (
-                <div className="w-full max-w-sm p-4 text-muted-foreground bg-transparent border rounded transition">
-                    <div className="flex justify-center items-center gap-2 animate-bounce">
-                        <GetIcon icon="IoIosArrowDropdown" />
-                        Solte aqui
+        <ScrollArea ref={ref} className="w-full h-full p-4">
+            <div className="w-full h-full flex flex-col justify-start items-center space-y-2">
+                {components.length === 0 &&
+                previewIndex !== components.length ? (
+                    <div className="h-full flex flex-col justify-center items-center gap-4">
+                        <Image
+                            src="/assets/svg/drag.svg"
+                            alt="drag"
+                            width={200}
+                            height={200}
+                        />
+                        <h1 className="text-muted-foreground">
+                            Arraste os componentes para cá!
+                        </h1>
                     </div>
-                </div>
-            )}
-        </div>
+                ) : undefined}
+                {components.map((component: ComponentItem, index) => {
+                    const isHovered = liveMode
+                        ? false
+                        : index === elementHoverIndex;
+                    return (
+                        <React.Fragment key={index}>
+                            {previewIndex === index && (
+                                <div className="w-full max-w-sm p-4 text-muted-foreground bg-transparent border rounded transition">
+                                    <div className="flex justify-center items-center gap-2 animate-bounce">
+                                        <GetIcon icon="IoIosArrowDropdown" />
+                                        Solte aqui
+                                    </div>
+                                </div>
+                            )}
+                            <div
+                                draggable={liveMode ? false : dragEnabled}
+                                onDragStart={() => {
+                                    if (!dragEnabled) return;
+                                    setDraggedIndex(index);
+                                }}
+                                onDragOver={(e) => {
+                                    e.preventDefault();
+                                    setPreviewIndex(index);
+                                }}
+                                onDrop={() => {
+                                    if (draggedIndex !== null) {
+                                        moveElementAtIndex(draggedIndex, index);
+                                        setDraggedIndex(null);
+                                    }
+                                    setPreviewIndex(null);
+                                }}
+                                onDragEnd={() => {
+                                    setDraggedIndex(null);
+                                    setPreviewIndex(null);
+                                }}
+                                onDragLeave={() => setPreviewIndex(null)}
+                                onClick={() => onSelectComponent(index)}
+                                onMouseEnter={() => setElementHoverIndex(index)}
+                                onMouseLeave={() =>
+                                    setElementHoverIndex(undefined)
+                                }
+                                className={cn(
+                                    "w-full max-w-lg min-h-1 border-2 border-transparent",
+                                    {
+                                        "cursor-pointer": !liveMode,
+                                        "relative border-blue-500 rounded-md":
+                                            isHovered,
+                                        "border-blue-500 rounded-md":
+                                            !liveMode &&
+                                            selectedIndex !== undefined
+                                                ? selectedIndex === index
+                                                : false,
+                                    }
+                                )}
+                            >
+                                <RenderComponent component={component} />
+                                {isHovered ? (
+                                    <div className="absolute top-1 left-0 z-50 flex gap-0 justify-start text-sm text-white bg-blue-400 shadow-lg rounded-md overflow-hidden">
+                                        <Button
+                                            size="icon"
+                                            variant="ghost"
+                                            className="w-8 h-8 cursor-move hover:bg-blue-700 rounded-none"
+                                            onMouseDown={() =>
+                                                setDragEnabled(true)
+                                            }
+                                            onMouseUp={() =>
+                                                setDragEnabled(false)
+                                            }
+                                            onMouseLeave={() =>
+                                                setDragEnabled(false)
+                                            }
+                                        >
+                                            <GetIcon icon="IoMoveSharp" />
+                                        </Button>
+                                        <Button
+                                            size="icon"
+                                            variant="ghost"
+                                            className="w-8 h-8 cursor-pointer hover:bg-blue-700 rounded-none"
+                                            onClick={() =>
+                                                onSelectComponent(index)
+                                            }
+                                        >
+                                            <GetIcon icon="MdEdit" />
+                                        </Button>
+                                        <Button
+                                            size="icon"
+                                            variant="ghost"
+                                            className="w-8 h-8 cursor-pointer hover:bg-blue-700 rounded-none"
+                                            onClick={() =>
+                                                duplicateElementAtIndex(index)
+                                            }
+                                        >
+                                            <GetIcon icon="FaClone" />
+                                        </Button>
+                                        <Button
+                                            size="icon"
+                                            variant="ghost"
+                                            className="w-8 h-8 cursor-pointer hover:bg-blue-700 rounded-none"
+                                            onClick={() =>
+                                                removeElementAtIndex(index)
+                                            }
+                                        >
+                                            <GetIcon icon="FaTrash" />
+                                        </Button>
+                                    </div>
+                                ) : undefined}
+                            </div>
+                        </React.Fragment>
+                    );
+                })}
+                {previewIndex === components.length && (
+                    <div className="w-full max-w-sm p-4 text-muted-foreground bg-transparent border rounded transition">
+                        <div className="flex justify-center items-center gap-2 animate-bounce">
+                            <GetIcon icon="IoIosArrowDropdown" />
+                            Solte aqui
+                        </div>
+                    </div>
+                )}
+            </div>
+        </ScrollArea>
     );
 }
