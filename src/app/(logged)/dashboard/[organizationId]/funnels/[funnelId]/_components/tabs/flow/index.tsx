@@ -3,9 +3,11 @@
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-import { INodeOption, ENodeType, TNode, TEdge } from "@/interfaces";
+import { INodeOption, ENodeType } from "@/interfaces";
 import { makeApiRequest } from "@/actions";
 import { IFunnel } from "@/models";
+
+import { IFlowState } from "@/components/custom/flow/flow";
 
 import { Flow, GetIcon } from "@/components/custom";
 
@@ -54,13 +56,7 @@ const defaultFlowState = () => {
 };
 
 export function FlowTab(props: Props) {
-    const [flowState, setFlowState] = useState<
-        | {
-              nodes: TNode[];
-              edges: TEdge[];
-          }
-        | undefined
-    >();
+    const [flowState, setFlowState] = useState<IFlowState | undefined>();
 
     async function fetchData() {
         const res = await makeApiRequest<IFunnel>("getFunnel", {
